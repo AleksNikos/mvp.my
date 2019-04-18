@@ -44,14 +44,22 @@ $config = [
             ],
         ],
         'db' => $db,
-        /*
+        'authManager'  => [
+            'class' => 'yii\rbac\DbManager',
+        ],
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                '<actions>'=>"site/<actions>"
             ],
         ],
-        */
+        'reCaptcha' => [
+            'class' => 'himiklab\yii2\recaptcha\ReCaptchaConfig',
+            'siteKeyV2' => '6LcozJ4UAAAAAEY1Sh9IUGx8Kq1DBVqalpgTirm0',
+            'secretV2' => '6LcozJ4UAAAAAK6uTuJR8WpsHNKk7532cm2k3SCj',
+        ],
+
     ],
     'params' => $params,
 ];

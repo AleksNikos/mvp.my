@@ -2,38 +2,51 @@
 
 namespace app\models;
 
-class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
+use Yii;
+use yii\db\ActiveRecord;
+
+class User extends ActiveRecord implements \yii\web\IdentityInterface
 {
-    public $id;
-    public $username;
-    public $password;
-    public $authKey;
-    public $accessToken;
 
-    private static $users = [
-        '100' => [
-            'id' => '100',
-            'username' => 'admin',
-            'password' => 'admin',
-            'authKey' => 'test100key',
-            'accessToken' => '100-token',
-        ],
-        '101' => [
-            'id' => '101',
-            'username' => 'demo',
-            'password' => 'demo',
-            'authKey' => 'test101key',
-            'accessToken' => '101-token',
-        ],
-    ];
+    const STATUS_WAIT = 5;
 
+    public static function tableName()
+    {
+        return 'user';
+    }
 
     /**
      * {@inheritdoc}
      */
     public static function findIdentity($id)
     {
-        return isset(self::$users[$id]) ? new static(self::$users[$id]) : null;
+        return static::findOne(["id"=>$id]);
+    }
+
+    /*
+     * Авторизует пользователя
+     *
+     * */
+    public function login() {
+
+        if(Yii::$app->user->login($this)){
+            $this->last_visit = time();
+            $this->save(false)  ;
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    /*
+     *
+     * */
+    public function sendConfirmEmail(){
+        Yii::$app->mailer->compose("confirm-email",["user"=>$this])
+            ->setFrom('from@domain.com')
+            ->setTo($this->email)
+            ->setSubject('Confirm your password')
+            ->send();
     }
 
     /**
@@ -41,13 +54,7 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        foreach (self::$users as $user) {
-            if ($user['accessToken'] === $token) {
-                return new static($user);
-            }
-        }
-
-        return null;
+        //
     }
 
     /**
@@ -58,13 +65,7 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
      */
     public static function findByUsername($username)
     {
-        foreach (self::$users as $user) {
-            if (strcasecmp($user['username'], $username) === 0) {
-                return new static($user);
-            }
-        }
-
-        return null;
+       //
     }
 
     /**
@@ -100,5 +101,24 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
     public function validatePassword($password)
     {
         return $this->password === $password;
+    }
+
+    /*
+     * Генерирует хеш пароля
+     *
+     * @param string $password - строка с не хешированным паролем
+     * @return string password_hash - хеш пароля
+     * */
+    public function generatePasswordHash ($password) {
+        return Yii::$app->security->generatePasswordHash($password);
+    }
+
+    /*
+     * Генерирует ключ авторизации
+     *
+     * @return string access_token - сгенерированный токен.
+     * */
+    public function generateAccessToken() {
+        return Yii::$app->security->generateRandomString();
     }
 }
