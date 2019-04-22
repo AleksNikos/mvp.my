@@ -1,5 +1,6 @@
 <?php
 namespace app\commands;
+use app\commands\rules\IsActiveUnitUser;
 use Yii;
 use yii\console\Controller;
 
@@ -33,6 +34,28 @@ class RbacController extends Controller {
         $auth->addChild($role1,$view);
         $auth->addChild($role2,$view);
 
+
+
+    }
+
+    /*
+     * Добавляет разрешение на просмотр страницы юнит-пользователzv
+     * */
+    public function actionAddIsActiveRule(){
+        $auth = Yii::$app->authManager;
+
+        $ActiveRule = $auth->createPermission("ActiveUnitUser");
+//        $ActiveRule->description = "";
+        $auth->add($ActiveRule);
+
+        //само правило
+        $rule =new  IsActiveUnitUser;
+        $auth->add($rule);
+
+        $ActiveRule->ruleName = $rule->name;
+
+        $view = $auth->getPermission("view");
+        $auth->addChild($view,$ActiveRule);
 
 
     }

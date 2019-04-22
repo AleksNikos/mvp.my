@@ -9,14 +9,21 @@
 namespace app\controllers;
 
 
+use app\models\User;
+use app\models\Users;
 use function boolval;
+use Codeception\Platform\Extension;
+use function intval;
 use function time;
 use Yii;
 use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
+use yii\web\ForbiddenHttpException;
 
 class UserController extends Controller
 {
+    public $layout = "user";
     public function behaviors()
     {
         return [
@@ -24,16 +31,22 @@ class UserController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['hello', 'confirm-email'],
+                        'actions' => ['hello', 'confirm-email','index','users','ajax-checker', 'keys','settings', 'payments'],
                         'allow' => true,
                         'roles' => ['ROLE_UNIT'],
                     ],
                 ],
-            ]
+            ],
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'ajax-checker' => ['post'],
+                ],
+            ],
         ];
 }
 
-    /*Îêíî ïðèâåòñòâèÿ ïîñëå ðåãèñòðàöèè*/
+    /*ÐžÐºÐ½Ð¾ Ð¿Ñ€Ð¸Ð²ÐµÑ‚ÑÑ‚Ð²Ð¸Ñ Ð¿Ð¾ÑÐ»Ðµ Ñ€ÐµÐ³Ð¸ÑÑ‚Ñ€Ð°Ñ†Ð¸Ð¸*/
 
     public function actionHello($code = null,$error=null){
 
@@ -49,9 +62,9 @@ class UserController extends Controller
 
     }
     /*
-     * @param string $code - êîä àêòèâàöèè ó÷åòíîé çàïèñè
-     * @return âåðíåò ðåíäåð activited â ñëó÷àåå óñïåõà
-     * ïåðåíàïðàâèò íà user/hello, ñ îøèáêîé â ñëó÷àå ïðîâàëà
+     * @param string $code - ÐºÐ¾Ð´ Ð°ÐºÑ‚Ð¸Ð²Ð°Ñ†Ð¸Ð¸ ÑƒÑ‡ÐµÑ‚Ð½Ð¾Ð¹ Ð·Ð°Ð¿Ð¸ÑÐ¸
+     * @return Ð²ÐµÑ€Ð½ÐµÑ‚ Ñ€ÐµÐ½Ð´ÐµÑ€ activited Ð² ÑÐ»ÑƒÑ‡Ð°ÐµÐµ ÑƒÑÐ¿ÐµÑ…Ð°
+     * Ð¿ÐµÑ€ÐµÐ½Ð°Ð¿Ñ€Ð°Ð²Ð¸Ñ‚ Ð½Ð° user/hello, Ñ Ð¾ÑˆÐ¸Ð±ÐºÐ¾Ð¹ Ð² ÑÐ»ÑƒÑ‡Ð°Ðµ Ð¿Ñ€Ð¾Ð²Ð°Ð»Ð°
      * */
     public function actionConfirmEmail($code){
          $currentUser = Yii::$app->user->identity;
@@ -60,7 +73,6 @@ class UserController extends Controller
              $currentUser->email_confirm_token = true;
              $currentUser->update_at = time();
              if($currentUser->save()){
-//                 $auth = Yii::$app->authManager->getRole()
                  return $this->render("activated");
              }else{
                  return $this->redirect(["user/hello","error"=>"1"]);
@@ -72,8 +84,80 @@ class UserController extends Controller
          }
     }
 
+    /*
+     * ÐžÐ±Ñ€Ð°Ð±Ð°Ñ‚Ñ‹Ð²Ð°ÐµÑ‚ Ð³Ð»Ð°Ð²Ð½ÑƒÑŽ ÑÑ‚Ñ€Ð°Ð½Ð¸Ñ†Ñƒ unit-Ð¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÐµÐ»Ñ. ÐµÑÐ»Ð¸ Ð¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÐµÐ»ÑŒ Ð½Ðµ Ð°ÐºÑ‚Ð¸ÐµÐ½, Ð²Ñ‹Ð»ÐµÑ‚Ð°ÐµÑ‚ 403-Ñ Ð¾ÑˆÐ¸Ð±ÐºÐ°.
+     *
+     * */
+    public function actionIndex(){
+        if(Yii::$app->user->can("ActiveUnitUser", ['active'=>'1'])){
+            return $this->render("index");
+        }else{
+           $this->accessDenied();
+        }
+
+    }
+
+    public function actionUsers(){
+        if(Yii::$app->user->can("ActiveUnitUser", ['active'=>'1'])){
+
+            $agents = User::find()->where(["parent_unit_id"=>Yii::$app->user->getId()])-> all();
 
 
+            return $this->render("users", ["agents"=>$agents]);
+        }else{
+            $this->accessDenied();
+        }
+    }
 
+    /*
+     * Ð’Ñ‹Ð²Ð¾Ð´Ð¸Ñ‚ Ð¾ÑˆÐ¸Ð±ÐºÑƒ Ð¾ Ð·Ð°Ð¿Ñ€ÐµÑ‰ÐµÐ½Ð½Ð¾Ð¼ Ð´Ð¾ÑÑ‚ÑƒÐ¿Ðµ.
+     * */
+    public function accessDenied(){
+       throw new ForbiddenHttpException("Access denied, your account is not activated");
+    }
+
+    public function actionAjaxChecker(){
+        if(Yii::$app->user->can("ActiveUnitUser", ['active'=>'1'])) {
+            if ($data = Yii::$app->request->post()) {
+                $id = intval($data['id']);
+                $agent = Users::findOne($id);
+//                $this->var_export($agent->loadData($data));
+
+                if ($agent = Users::findOne($id) and $agent->loadData($data)) {
+                    $agent->save();
+                    echo "OK";
+                } else {
+                    return "NOT";
+                }
+
+
+            }
+        }else{
+            return $this->accessDenied();
+        }
+    }
+
+    public function actionKeys(){
+        if(Yii::$app->user->can("ActiveUnitUser", ['active'=>'1'])) {
+            return $this->render("keys");
+        }else{
+            $this->accessDenied();
+        }
+    }
+
+    public function actionSettings() {
+        if(Yii::$app->user->can("ActiveUnitUser", ['active'=>'1'])){
+            return $this->render("settings");
+        }else{
+            $this->accessDenied();
+        }
+    }
+    public function actionPayments(){
+        if(Yii::$app->user->can("ActiveUnitUser", ['active'=>'1'])) {
+            return $this->render("payments");
+        }else{
+            $this->accessDenied();
+        }
+    }
 
 }

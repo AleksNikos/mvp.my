@@ -5,6 +5,28 @@ namespace app\models;
 use Yii;
 use yii\db\ActiveRecord;
 
+/**
+ * This is the model class for table "user".
+ *
+ * @property int $id
+ * @property string $email
+ * @property string $password_hash
+ * @property string $purpose
+ * @property string $country
+ * @property string $city
+ * @property int $user_type
+ * @property string $access_token
+ * @property string $name_organization
+ * @property string $position
+ * @property int $REQUESTED_FREE
+ * @property string $FREE_STATUS
+ * @property string $email_confirm_token
+ * @property int $IS_ACTIVATED
+ * @property int $IS_DEFAULT
+ * @property int register_date
+ * @property int last_visit
+ * @property int update_at
+ */
 class User extends ActiveRecord implements \yii\web\IdentityInterface
 {
 
@@ -121,4 +143,14 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
     public function generateAccessToken() {
         return Yii::$app->security->generateRandomString();
     }
+
+    /*
+     * Получает ключи которые принадлежат одному пользователю
+     *
+     * */
+    public function getKeys () {
+        return $this->hasMany(Keys::className(),["user_id"=>"id"]);
+    }
+
+
 }

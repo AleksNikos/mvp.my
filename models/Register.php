@@ -113,11 +113,12 @@ class Register extends \yii\db\ActiveRecord
         $this->email_confirm_token = Yii::$app->security->generateRandomString();
     }
 
-    public function parameterDefautUser() {
+    public function parameterDefautUser($parendID) {
         $this->id=null;
         $this->IS_DEFAULT = true;
         $this->IS_ACTIVATED = true;
         $this->FREE_STATUS = "PENDING";
+        $this->parent_unit_user = $parendID;
     }
 
     public function afterSave($insert, $changedAttributes)
@@ -135,6 +136,7 @@ class Register extends \yii\db\ActiveRecord
         $key->user_id = $this->id;
         $key->IS_ACTIVATED = $this->IS_ACTIVATED;
         $key->created = time();
+        $key->isDefault = 1;
         $key->save(false); //не проверяем т.к. генерируется автоматически.
     }
 

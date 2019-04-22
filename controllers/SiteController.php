@@ -141,10 +141,10 @@ class SiteController extends Controller
                 /*Создаем дефолтового юзера*/
                 $default_user = new Register();
                 $default_user->setAttributes($model->getAttributes(), false);
-                $default_user->parameterDefautUser(); //устанавливаем дефолтовые параметры.
+                $default_user->parameterDefautUser($model->id); //устанавливаем дефолтовые параметры.
                 $default_user->save(false);//отключили валидаци. т.к. это полная копия изначальной модели
-                /*Устанавливаем роли*/
 
+                /*Устанавливаем роли*/
                 $ROLE_UNIT = Yii::$app->authManager->getRole("ROLE_UNIT");
                 $ROLE_AGENT = Yii::$app->authManager->getRole("ROLE_AGENT");
 
@@ -187,7 +187,8 @@ class SiteController extends Controller
      * @return array $data - массив формируемый из файла csv / [..., [0=>"Russia", 1=>"ru"], ...]
      * */
     private function importCSV($csv){
-        $pathToFile = Yii::getAlias("@app")."\\data\\".$csv;
+        $pathToFile = Yii::getAlias("@app")."/data/".$csv;
+//        $this->var_export($pathToFile);
         if (!file_exists($pathToFile) || !is_readable($pathToFile)) {
             return [];
         }

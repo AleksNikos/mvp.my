@@ -20,9 +20,28 @@ class AppAsset extends AssetBundle
     public $basePath = '@webroot';
     public $baseUrl = '@web';
     public $css = [
+        /*исходные файлы*/
         'css/site.css',
+
+        /*Шаблонные файлы*/
+        'css/animate.min.css',
+        'css/hamburgers.min.css',
+        'css/jquery.fancybox.min.css',
+        'css/main.css',
+        'css/media.css',
+        'css/smart-grid.css'
     ];
     public $js = [
+
+        /*Шаблонные файлы*/
+        'js/canvasjs.min.js',
+        'js/Chart.js',
+        'js/chartjs-plugin-stacked100.js',
+        'js/EJSChart.min.js',
+        'js/index.js',
+        'js/jquery.fancybox.min.js',
+        'js/main.js',
+        'js/wow.min.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',
