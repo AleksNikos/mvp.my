@@ -21,7 +21,9 @@
         "bower-asset/jquery": "2.2.4",
         "kartik-v/yii2-widget-select2": "dev-master",
         "yiisoft/yii2-bootstrap4": "^1.0@dev",
-        "himiklab/yii2-recaptcha-widget": "*"
+        "himiklab/yii2-recaptcha-widget": "*",
+        "marciocamello/yii2-paypal": "*",
+        "stripe/stripe-php": "^2.0@dev"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

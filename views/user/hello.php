@@ -12,8 +12,12 @@ if($error==1){
 
     echo "<br>Неверный ключ активации или пользователь уже активен";
 }
-
+$this->params['pageID']="dashboard";
 ?>
-<p>на ваш ящик было отправлено письмо.</p>
-<?= Html::a('Отправить еще раз', ['/user/hello',"code"=>"1"], ['class'=>'btn btn-primary'])?>
+<div class="responsive">
+
+    <p>на ваш ящик было отправлено письмо.</p>
+    <?= Html::a('Отправить еще раз', ['/user/hello',"code"=>"1"], ['class'=>'btn btn-primary'])?>
+</div>
+
 

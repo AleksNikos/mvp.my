@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9273b39ce9ed092f9e9f3bb012e0ad97",
+    "content-hash": "13f8a9d38e65bcb60c5e7c7e55a91187",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -480,6 +480,50 @@
             "time": "2018-12-11T10:34:32+00:00"
         },
         {
+            "name": "marciocamello/yii2-paypal",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/marciocamello/yii2-paypal.git",
+                "reference": "5e2d2ad038b462508de16bc0d5deeffe95757551"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/marciocamello/yii2-paypal/zipball/5e2d2ad038b462508de16bc0d5deeffe95757551",
+                "reference": "5e2d2ad038b462508de16bc0d5deeffe95757551",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "paypal/rest-api-sdk-php": "*",
+                "php": ">=5.3.0",
+                "yiisoft/yii2": "*"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "marciocamello\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Marcio Camello",
+                    "email": "marciocamello@outlook.com"
+                }
+            ],
+            "description": "The PayPal extension for the Yii2 framework",
+            "keywords": [
+                "paypal",
+                "yii2"
+            ],
+            "time": "2014-12-15T10:06:41+00:00"
+        },
+        {
             "name": "npm-asset/bootstrap",
             "version": "4.3.1",
             "dist": {
@@ -490,6 +534,157 @@
             "license": [
                 "MIT"
             ]
+        },
+        {
+            "name": "paypal/rest-api-sdk-php",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/paypal/PayPal-PHP-SDK.git",
+                "reference": "647c8c49bc40a2a5fb7c76d2dfc5a9c6ee57c789"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/paypal/PayPal-PHP-SDK/zipball/647c8c49bc40a2a5fb7c76d2dfc5a9c6ee57c789",
+                "reference": "647c8c49bc40a2a5fb7c76d2dfc5a9c6ee57c789",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "php": ">=5.3.0",
+                "psr/log": "^1.0.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.8.35"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "PayPal": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "PayPal",
+                    "homepage": "https://github.com/paypal/rest-api-sdk-php/contributors"
+                }
+            ],
+            "description": "PayPal's PHP SDK for REST APIs",
+            "homepage": "http://paypal.github.io/PayPal-PHP-SDK/",
+            "keywords": [
+                "payments",
+                "paypal",
+                "rest",
+                "sdk"
+            ],
+            "time": "2019-02-07T19:02:59+00:00"
+        },
+        {
+            "name": "psr/log",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/log.git",
+                "reference": "c4421fcac1edd5a324fda73e589a5cf96e52ffd0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/log/zipball/c4421fcac1edd5a324fda73e589a5cf96e52ffd0",
+                "reference": "c4421fcac1edd5a324fda73e589a5cf96e52ffd0",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Psr\\Log\\": "Psr/Log/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "http://www.php-fig.org/"
+                }
+            ],
+            "description": "Common interface for logging libraries",
+            "homepage": "https://github.com/php-fig/log",
+            "keywords": [
+                "log",
+                "psr",
+                "psr-3"
+            ],
+            "time": "2018-11-21T13:42:00+00:00"
+        },
+        {
+            "name": "stripe/stripe-php",
+            "version": "v2.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/stripe/stripe-php.git",
+                "reference": "9d76444550a09a6f9c55dd98113ba0901908e60a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/9d76444550a09a6f9c55dd98113ba0901908e60a",
+                "reference": "9d76444550a09a6f9c55dd98113ba0901908e60a",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0",
+                "satooshi/php-coveralls": "~0.6.1",
+                "squizlabs/php_codesniffer": "~2.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Stripe\\": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Stripe and contributors",
+                    "homepage": "https://github.com/stripe/stripe-php/contributors"
+                }
+            ],
+            "description": "Stripe PHP Library",
+            "homepage": "https://stripe.com/",
+            "keywords": [
+                "api",
+                "payment processing",
+                "stripe"
+            ],
+            "time": "2015-07-07T01:13:32+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -3926,7 +4121,8 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "kartik-v/yii2-widget-select2": 20,
-        "yiisoft/yii2-bootstrap4": 20
+        "yiisoft/yii2-bootstrap4": 20,
+        "stripe/stripe-php": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

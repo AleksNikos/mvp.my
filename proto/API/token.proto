@@ -1,0 +1,14 @@
+
+syntax = "proto3";
+
+package cul;
+
+message UserAuthToken{
+    uint64 uid = 1; //in manager -- from db
+    string login = 2; //in service -- from income request
+    string email = 3; //in service -- from income request
+    repeated uint64 restriction_codes = 6; // in service -- from income request
+
+    string expired = 4; //in manager - from current date
+    bytes key = 5; //in manager -- from rd
+}

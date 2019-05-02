@@ -35,3 +35,5 @@ views/�������/*
 #vagrant folder
 /.vagrant
 views/верстка/
+
+*.zip

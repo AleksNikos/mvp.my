@@ -3,6 +3,8 @@
 namespace app\controllers;
 
 use app\models\Register;
+use app\models\ResetPassword;
+use app\models\SetNewPassword;
 use app\models\User;
 use Yii;
 use yii\filters\AccessControl;
@@ -14,6 +16,8 @@ use app\models\ContactForm;
 
 class SiteController extends Controller
 {
+//    public $layout = "user";
+
     /**
      * {@inheritdoc}
      */
@@ -56,6 +60,48 @@ class SiteController extends Controller
         ];
     }
 
+    public function actionReset(){
+        $model = new ResetPassword();
+
+        if($model->load(Yii::$app->request->post())){
+            if($user = User::findOne(["email"=>$model->email, 'IS_DEFAULT'=>0])){
+                $user->reset_password_hash = Yii::$app->security->generateRandomString();
+                $user->save();
+                $model->sendMessage($user);
+                return $this->redirect(["site/reset-ok"]);
+            }
+            else{
+                $model->addError("email",["This email does not exist"]);
+            }
+        }
+
+        return $this->render("reset", ["model"=>$model]);
+    }
+
+    public function actionResetOk(){
+        return $this->render("reset-ok");
+    }
+
+    public function actionSetNewPassword($code) {
+        $model = new SetNewPassword();
+        $error = 0;
+       if($user = User::findOne(["reset_password_hash"=>$code])){
+
+            if($model->load(Yii::$app->request->post())){
+
+                    if($model->setNewPassword($user)){
+                        $this->redirect(["site/login"]);
+                    }
+            }
+
+       }else{
+           $error = "You have already recovered the password for this link.";
+       }
+        return $this->render("set-new-password", ["model"=>$model, "error"=>$error]);
+
+
+    }
+
     /**
      * Displays homepage.
      *
@@ -73,13 +119,22 @@ class SiteController extends Controller
      */
     public function actionLogin()
     {
+        /*
+         * Ñ€Ð°Ð·Ð»Ð¾Ð³Ð¸Ð½Ð¸Ð²Ð°ÐµÐ¼ Ð¿Ð¾Ð»ÑŒÐ·Ð¾Ð°Ð²Ñ‚ÐµÐ»Ñ
+         * */
         if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
+            Yii::$app->user->logout();
         }
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+            $role = Yii::$app->authManager->getRolesByUser(Yii::$app->user->getId());
+            if($role["ROLE_UNIT"]){
+                return $this->redirect("/user/index");
+            }else if($role["ROLE_AGENT"]){
+                return $this->redirect("/agent/keys");
+            }
+
         }
 
         $model->password = '';
@@ -97,7 +152,7 @@ class SiteController extends Controller
     {
         Yii::$app->user->logout();
 
-        return $this->goHome();
+        return $this->redirect("/login");
     }
 
     /**
@@ -127,8 +182,8 @@ class SiteController extends Controller
     {
         return $this->render('about');
     }
-    /*äåéñòâèå îòâå÷àþùåå çà ïîëíûé öèêë ðåãèñòðàöèè
-    * (Îòïðàâêó ïèñåì íóæíî âûíåñòè â îòäåëüíûé è êîíòðîëëåð)
+    /*Ð´ÐµÐ¹ÑÑ‚Ð²Ð¸Ðµ Ð¾Ñ‚Ð²ÐµÑ‡Ð°ÑŽÑ‰ÐµÐµ Ð·Ð° Ð¿Ð¾Ð»Ð½Ñ‹Ð¹ Ñ†Ð¸ÐºÐ» Ñ€ÐµÐ³Ð¸ÑÑ‚Ñ€Ð°Ñ†Ð¸Ð¸
+    * (ÐžÑ‚Ð¿Ñ€Ð°Ð²ÐºÑƒ Ð¿Ð¸ÑÐµÐ¼ Ð½ÑƒÐ¶Ð½Ð¾ Ð²Ñ‹Ð½ÐµÑÑ‚Ð¸ Ð² Ð¾Ñ‚Ð´ÐµÐ»ÑŒÐ½Ñ‹Ð¹ Ð¸ ÐºÐ¾Ð½Ñ‚Ñ€Ð¾Ð»Ð»ÐµÑ€)
     */
     public function actionRegister(){
 
@@ -136,25 +191,25 @@ class SiteController extends Controller
         Yii::$app->user->logout();
         if($model->load(Yii::$app->request->post())){
             $model->addParametersInModel();
-            if($model->save(false)){// âîññòàíîâèòü
+            if($model->save(false)){// Ð²Ð¾ÑÑÑ‚Ð°Ð½Ð¾Ð²Ð¸Ñ‚ÑŒ
 
-                /*Ñîçäàåì äåôîëòîâîãî þçåðà*/
+                /*Ð¡Ð¾Ð·Ð´Ð°ÐµÐ¼ Ð´ÐµÑ„Ð¾Ð»Ñ‚Ð¾Ð²Ð¾Ð³Ð¾ ÑŽÐ·ÐµÑ€Ð°*/
                 $default_user = new Register();
                 $default_user->setAttributes($model->getAttributes(), false);
-                $default_user->parameterDefautUser($model->id); //óñòàíàâëèâàåì äåôîëòîâûå ïàðàìåòðû.
-                $default_user->save(false);//îòêëþ÷èëè âàëèäàöè. ò.ê. ýòî ïîëíàÿ êîïèÿ èçíà÷àëüíîé ìîäåëè
+                $default_user->parameterDefautUser($model->id); //ÑƒÑÑ‚Ð°Ð½Ð°Ð²Ð»Ð¸Ð²Ð°ÐµÐ¼ Ð´ÐµÑ„Ð¾Ð»Ñ‚Ð¾Ð²Ñ‹Ðµ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ñ‹.
+                $default_user->save(false);//Ð¾Ñ‚ÐºÐ»ÑŽÑ‡Ð¸Ð»Ð¸ Ð²Ð°Ð»Ð¸Ð´Ð°Ñ†Ð¸. Ñ‚.Ðº. ÑÑ‚Ð¾ Ð¿Ð¾Ð»Ð½Ð°Ñ ÐºÐ¾Ð¿Ð¸Ñ Ð¸Ð·Ð½Ð°Ñ‡Ð°Ð»ÑŒÐ½Ð¾Ð¹ Ð¼Ð¾Ð´ÐµÐ»Ð¸
 
-                /*Óñòàíàâëèâàåì ðîëè*/
+                /*Ð£ÑÑ‚Ð°Ð½Ð°Ð²Ð»Ð¸Ð²Ð°ÐµÐ¼ Ñ€Ð¾Ð»Ð¸*/
                 $ROLE_UNIT = Yii::$app->authManager->getRole("ROLE_UNIT");
                 $ROLE_AGENT = Yii::$app->authManager->getRole("ROLE_AGENT");
 
                 Yii::$app->authManager->assign($ROLE_UNIT,$model->id);
                 Yii::$app->authManager->assign($ROLE_AGENT,$default_user->id);
 
-                //àòîðèçîâàòü ïîëüçîâàòåëÿ.
+                //Ð°Ñ‚Ð¾Ñ€Ð¸Ð·Ð¾Ð²Ð°Ñ‚ÑŒ Ð¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÐµÐ»Ñ.
                 $user = User::findIdentity($model->id);
                 if($user->login()){
-                    // ñäåëàòü îòïðàâêó ïèñüìà
+                    // ÑÐ´ÐµÐ»Ð°Ñ‚ÑŒ Ð¾Ñ‚Ð¿Ñ€Ð°Ð²ÐºÑƒ Ð¿Ð¸ÑÑŒÐ¼Ð°
                     $user->sendConfirmEmail();
                     $this->redirect(["user/hello"]);
                 }else{
@@ -167,7 +222,7 @@ class SiteController extends Controller
             }
 
         }
-        $csv = $this->importCSV("country.csv"); //èìïîðòèðóåò csv ñî âñåìè ñòðàíàìè ìèðà
+        $csv = $this->importCSV("country.csv"); //Ð¸Ð¼Ð¿Ð¾Ñ€Ñ‚Ð¸Ñ€ÑƒÐµÑ‚ csv ÑÐ¾ Ð²ÑÐµÐ¼Ð¸ ÑÑ‚Ñ€Ð°Ð½Ð°Ð¼Ð¸ Ð¼Ð¸Ñ€Ð°
         $countrySelect2 = $this->CountrySelect2($csv);
 
         return $this->render("register",["model"=>$model, "countrySelect2"=>$countrySelect2]);
@@ -182,9 +237,9 @@ class SiteController extends Controller
     }
 
     /*
-     * ïðîèçâîäèò èìïîðò èç ôàéëà CSV
-     * @param string $csv - èìÿ ôàëà name.csv
-     * @return array $data - ìàññèâ ôîðìèðóåìûé èç ôàéëà csv / [..., [0=>"Russia", 1=>"ru"], ...]
+     * Ð¿Ñ€Ð¾Ð¸Ð·Ð²Ð¾Ð´Ð¸Ñ‚ Ð¸Ð¼Ð¿Ð¾Ñ€Ñ‚ Ð¸Ð· Ñ„Ð°Ð¹Ð»Ð° CSV
+     * @param string $csv - Ð¸Ð¼Ñ Ñ„Ð°Ð»Ð° name.csv
+     * @return array $data - Ð¼Ð°ÑÑÐ¸Ð² Ñ„Ð¾Ñ€Ð¼Ð¸Ñ€ÑƒÐµÐ¼Ñ‹Ð¹ Ð¸Ð· Ñ„Ð°Ð¹Ð»Ð° csv / [..., [0=>"Russia", 1=>"ru"], ...]
      * */
     private function importCSV($csv){
         $pathToFile = Yii::getAlias("@app")."/data/".$csv;

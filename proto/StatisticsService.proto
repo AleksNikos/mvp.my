@@ -1,0 +1,43 @@
+
+syntax = "proto3";
+
+package cul;
+
+message EmptyMessage{
+}
+
+message ApiCallsCount{
+    uint64 total = 1; //Общее количество вызовов
+    uint64 success = 2; //Количество успешных вызовов
+    uint64 errors = 3; //Количество вызовов с ошибкой
+}
+
+message ServiceInfo{
+    uint64 service_code = 1; //Код сервиса
+}
+
+message ApiKey{
+    uint64 key_id = 1; //id ключа
+}
+
+message ApiKeys{
+    repeated ApiKey keys = 1; //много ключей
+}
+
+//Информация о количестве вызовов для множества ключей. key[i] ==> calls[i]
+message ApiKeyCallsCount{
+    repeated ApiKey key = 1;
+    repeated ApiCallsCount calls = 2;
+}
+
+service CULApiStatistics{
+    rpc self_requests_count(EmptyMessage) returns(ApiCallsCount){} //Количество вызовов для своего токена. Доступно всем
+
+    rpc self_service_requests_count(ServiceInfo) returns(ApiCallsCount) {} //Количество вызовов для своего токена и для заданного сервиса
+
+    rpc key_requests_count(ApiKey) returns(ApiCallsCount) {} //Количество вызовов для заданного ключа
+
+    rpc keys_requests_count(ApiKeys) returns(ApiKeyCallsCount) {} //Количество вызовов для заданного множества ключей
+
+    rpc service_calls(ServiceInfo) returns(ApiCallsCount) {} //Количество вызовов заданного сервиса
+}

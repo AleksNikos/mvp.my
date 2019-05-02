@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use function var_export;
 use Yii;
 use yii\db\ActiveRecord;
 
@@ -87,7 +88,7 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
      */
     public static function findByUsername($username)
     {
-       //
+       return static::findOne(["email"=>$username]);
     }
 
     /**
@@ -122,7 +123,8 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
      */
     public function validatePassword($password)
     {
-        return $this->password === $password;
+        return Yii::$app->security->validatePassword($password,$this->password_hash);
+//        return $this->password === $password;
     }
 
     /*
@@ -152,5 +154,16 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
         return $this->hasMany(Keys::className(),["user_id"=>"id"]);
     }
 
+    public function attributeLabels()
+    {
+        return [
+            'position' => 'name',
+            'Engines'=>'Engines'
+        ];
+    }
 
+    public function setImage($image_name) {
+        $this->image = $image_name;
+        $this->save(false);
+    }
 }

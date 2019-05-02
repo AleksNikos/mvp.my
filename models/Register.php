@@ -48,10 +48,12 @@ class Register extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['email', 'password', 'purpose', 'country', 'city', 'user_type', 'name_organization', 'confirm_password','verify_code'], 'required'],
+            [['email','username', 'password', 'purpose', 'country', 'city', 'user_type', 'name_organization', 'confirm_password','verify_code'], 'required'],
             [['user_type', 'REQUESTED_FREE', 'IS_ACTIVATED', 'IS_DEFAULT'], 'integer'],
             [['email', 'password', 'purpose', 'country', 'city', 'name_organization', 'position', 'FREE_STATUS'], 'string', 'max' => 255],
 
+            ['username','string'],
+            [['username'], 'unique','targetClass' => self::className(), 'message' => 'This username has already been taken.' ],
             /*валидация введенного e-mail*/
             [['email'],'email'],
             [['email'], 'unique', 'targetClass' => self::className(), 'message' => 'This email address has already been taken.'],
@@ -73,6 +75,7 @@ class Register extends \yii\db\ActiveRecord
             /*request_free*/
             [['REQUESTED_FREE'], 'safe'],
             [['REQUESTED_FREE'], 'boolean'],
+
         ];
     }
 
@@ -118,7 +121,7 @@ class Register extends \yii\db\ActiveRecord
         $this->IS_DEFAULT = true;
         $this->IS_ACTIVATED = true;
         $this->FREE_STATUS = "PENDING";
-        $this->parent_unit_user = $parendID;
+        $this->parent_unit_id = $parendID;
     }
 
     public function afterSave($insert, $changedAttributes)
@@ -131,13 +134,16 @@ class Register extends \yii\db\ActiveRecord
      * Создает дефолтовое значение ключа, для дефолтового пользователя
      * */
     public function createDefaultKey() {
-        $key = new Keys();
-        $key->value = Yii::$app->security->generateRandomString();
-        $key->user_id = $this->id;
-        $key->IS_ACTIVATED = $this->IS_ACTIVATED;
-        $key->created = time();
-        $key->isDefault = 1;
-        $key->save(false); //не проверяем т.к. генерируется автоматически.
+        if ($this->IS_DEFAULT){
+            $key = new Keys();
+            $key->value = Yii::$app->security->generateRandomString();
+            $key->user_id = $this->id;
+            $key->IS_ACTIVATED = $this->IS_ACTIVATED;
+            $key->created = time();
+            $key->isDefault = 1;
+            $key->save(false); //не проверяем т.к. генерируется автоматически.
+        }
+
     }
 
 

@@ -1,0 +1,57 @@
+syntax = "proto3";
+
+package cul;
+
+message TaskInfo{
+    uint64 id = 1;
+}
+
+enum Status{
+    ACTIVE = 0; //Запрос находится в обработке
+    DONE = 1; //Запрос выполнен
+    ERROR = 2; //Запрос завершен с ошибкой
+    QUEUED = 3; //Запрос помещен в очередь.
+}
+
+message ImageStreamRequest{
+    bytes image = 1; //raw image in bgr format
+    uint64 width = 2; //image width
+    uint64 height = 3; //image height
+    uint32 pixel_size = 4; //pixel size in bytes
+}
+
+message ImageStreamResponse{
+    string response = 1;
+}
+
+message ImageProcessingRequest{
+    bytes image = 1; //Бинарное представление изображения. (Грубо говоря копия файла с файловой системы).
+    string extension = 3; //Расширение изображения. (Пример: .jpg)
+}
+
+message VideoProcessingRequest{
+    bytes video_data = 1; //Бинарное представления фрагмента видеозаписи. (Считай копия куска файла с файловой системы).
+    string extension = 2; //Расширение видеофайла. (Пример: .mp4)
+}
+
+message TaskProgress{
+    double progress = 1; //Общий прогресс запроса
+    map<string, double> component_progress = 2; //Прогресс запроса по компонентно.
+    Status status = 3; //Статус запроса
+}
+
+message MediaInfo{
+    uint32 width = 1;
+    uint32 height = 2;
+    uint64 frames = 3;
+    double duration = 4;
+    double fps = 5;
+}
+
+message ApiResult{
+    bytes data = 1; //Результат запроса. Доступно только при status == DONE или status == ERROR
+    Status status = 2;
+    string message = 3; //Дополнительное сообщение о выполнении запроса. Обычно сождержит описание ошибки
+    string extra_path = 4; //Путь к видеофайлу.
+    MediaInfo media = 5;
+}

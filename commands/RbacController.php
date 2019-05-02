@@ -39,7 +39,7 @@ class RbacController extends Controller {
     }
 
     /*
-     * Добавляет разрешение на просмотр страницы юнит-пользователzv
+     * Добавляет ограничение на действие view - только дляактивных пользователей.
      * */
     public function actionAddIsActiveRule(){
         $auth = Yii::$app->authManager;

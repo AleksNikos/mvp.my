@@ -1,0 +1,74 @@
+syntax = "proto3";
+
+package cul;
+
+message CreateTicketInfo{
+    string video_path = 2;
+    repeated string features = 1;
+    string user_id = 3;
+    map<string, string> params = 4;
+    repeated int32 processing_shape = 5;
+    repeated string features_for_visualization = 6;
+    bool stream = 7;
+}
+
+message ReplyTo{
+    string exchange = 1;
+    string queue = 2;
+}
+
+message CreateTicketRequest{
+    string action = 1;
+    CreateTicketInfo ticket_info = 2;
+    ReplyTo reply_to = 3;
+}
+
+message ProcessingTicket{
+    string data_iter = 1;
+    string id = 2;
+    string pass_phrase = 3;
+}
+
+message CreateTicketResponse{
+    string action = 1;
+    ProcessingTicket ticket = 2;
+    string user_id = 3;
+}
+
+message TicketStatusRequest{
+    string action = 1;
+    string ticket_id = 2;
+    ReplyTo reply_to = 3;
+}
+
+message TicketStatusResponse{
+    string action = 1;
+
+    message TicketStatus{
+        string postprocessing_results_path = 1;
+        int32 num_blobs = 2;
+        string video_path = 3;
+        double duration = 4;
+        string visualized_video_path = 5;
+        map<string, double> progress = 6;
+        map<string, int32> processed_blobs = 7;
+    }
+
+    TicketStatus status = 2;
+    string ticket_id = 3;
+}
+
+message StreamProcessRequest{
+    string action = 1;
+    int64 image_num = 2;
+    int64 last_image = 3;
+    bytes image = 4;
+    string ticket_id = 5;
+    ReplyTo reply_to = 7;
+}
+
+message StreamProcessResult{
+    string action = 1;
+    int64 image_num = 2;
+    string ticket_id = 3;
+}

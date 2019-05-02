@@ -1,0 +1,34 @@
+
+syntax = "proto3";
+
+package cul;
+
+message ValidationRequest{
+}
+
+message ValidationResult{
+
+}
+
+message GenerateTokenRequest{
+    string login = 2;
+    string email = 3;
+    repeated uint64 restriction_codes = 4;
+    string country = 5;
+    string state = 6;
+    string location = 7;
+    string company = 8;
+}
+
+message GenerateTokenResponse{
+    bytes token = 1;
+    bytes server_root_ca = 2;
+    bytes client_key = 3;
+    bytes client_cert = 4;
+}
+
+service AuthService{
+    rpc validate_token(ValidationRequest) returns (ValidationResult) {}
+
+    rpc generate_token(GenerateTokenRequest) returns (GenerateTokenResponse) {}
+}
