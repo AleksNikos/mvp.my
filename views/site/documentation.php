@@ -21,64 +21,132 @@ $this->title = 'Documentation';
 
             Before using the API, you have to register and create a new key, or download a free trial key in case you want to test the service. You can choose as many modules as you want.
             <br><br>
-            Show setup for: Ubuntu: 16 <span class="round_gradient">18</span> + Python: 2,7 <span class="round_gradient">3,7</span>
-        </p>
-    </div>
-    <div id="installation" class="link">
-        <h2>Installation</h2>
-        <p>1. First, you have to install the requirements and the system core:</p>
-        <ul class="steps">
-            <li>
-                1.1 Clone the GitHub repository:
-                <br />
-                <pre><code>git clone https://github.com/NeurodataLab/api-service</code></pre>
-            </li>
-            <li>
-                1.2 Go to the Python folder:
-                <br />
-                <pre><code>cd api-service/python</code></pre>
-            </li>
-            <li>
-                1.3 Install requirements:
-                <br />
-                <pre><code>python2 [python3] -m pip install -r -requirements.txt</code></pre>
-            </li>
-            <li>
-                1.4 Create proto files for the gRPC:
-                <br />
-                <pre><code>source ./make_proto_python2.sh [make_proto_python3.sh]</code></pre>
-                <br />
-                1.5 All generated files will be placed into <br />
-                <pre><code>api-service/python/pyproto</code></pre>
-            </li>
-        </ul>
-        <p>
-            2. After successful installation you will have to add the keys to the system:
-        </p>
-        <ul class="steps">
-            <li>
-                2.1 Download each key from your personal account. There will be 4 files. Read more about them at <a href="grpc.io">grpc.io</a>
-            </li>
-            <li>
-                2.2 Create a subfolder under
-                <pre><code>api-service/cert</code></pre>
-                with any name you want, for example my_key
-            </li>
-            <li>
-                2.3 Put the 4 files to this subfolder
-                <pre><code>api-service/cert/my_key/</code></pre>
-            </li>
-        </ul>
-    </div>
-    <div id="usage" class="link">
-        <h2>Usage</h2>
-        <p>
-            Before use, don’t forget to add api-service/python and api-service/python/pyproto to PYTHONPATH environment variable.
+<!--            Show setup for: Ubuntu: 16 <span class="round_gradient">18</span> + Python: 2,7 <span class="round_gradient">3,7</span>-->
+<!--        </p>-->
+<!--    </div>-->
+<!--    <div id="installation" class="link">-->
+<!--        <h2>Installation</h2>-->
+<!--        <p>1. First, you have to install the requirements and the system core:</p>-->
+<!--        <ul class="steps">-->
+<!--            <li>-->
+<!--                1.1 Clone the GitHub repository:-->
+<!--                <br />-->
+<!--                <pre><code>git clone https://github.com/NeurodataLab/api-service</code></pre>-->
+<!--            </li>-->
+<!--            <li>-->
+<!--                1.2 Go to the Python folder:-->
+<!--                <br />-->
+<!--                <pre><code>cd api-service/python</code></pre>-->
+<!--            </li>-->
+<!--            <li>-->
+<!--                1.3 Install requirements:-->
+<!--                <br />-->
+<!--                <pre><code>python2 [python3] -m pip install -r -requirements.txt</code></pre>-->
+<!--            </li>-->
+<!--            <li>-->
+<!--                1.4 Create proto files for the gRPC:-->
+<!--                <br />-->
+<!--                <pre><code>source ./make_proto_python2.sh [make_proto_python3.sh]</code></pre>-->
+<!--                <br />-->
+<!--                1.5 All generated files will be placed into <br />-->
+<!--                <pre><code>api-service/python/pyproto</code></pre>-->
+<!--            </li>-->
+<!--        </ul>-->
+<!--        <p>-->
+<!--            2. After successful installation you will have to add the keys to the system:-->
+<!--        </p>-->
+<!--        <ul class="steps">-->
+<!--            <li>-->
+<!--                2.1 Download each key from your personal account. There will be 4 files. Read more about them at <a href="grpc.io">grpc.io</a>-->
+<!--            </li>-->
+<!--            <li>-->
+<!--                2.2 Create a subfolder under-->
+<!--                <pre><code>api-service/cert</code></pre>-->
+<!--                with any name you want, for example my_key-->
+<!--            </li>-->
+<!--            <li>-->
+<!--                2.3 Put the 4 files to this subfolder-->
+<!--                <pre><code>api-service/cert/my_key/</code></pre>-->
+<!--            </li>-->
+<!--        </ul>-->
+<!--    </div>-->
+<!--    <div id="usage" class="link">-->
+<!--        <h2>Usage</h2>-->
+<!--        <p>-->
+<!--            Before use, don’t forget to add api-service/python and api-service/python/pyproto to PYTHONPATH environment variable.-->
+            Show setup for:
+            <input name="setup_for" type="radio" value="ubu" id="ubuntu" checked>
+            <label for="ubuntu">
+                Ubuntu: 16 <span class="round_gradient">18</span>
+            </label>
+            +
+            <input name="setup_for" type="radio" value="pyt" id="python">
+            <label for="python">
+                Python: 2.7 <span class="round_gradient">3.7</span>
+            </label>
+<!--            First, you will have to authorize in the service:-->
+<!--        </p>-->
+<!--        <pre><code><span class="pink">import</span> api.auth.Auth <span class="pink">as</span> Auth-->
 
-            First, you will have to authorize in the service:
+
         </p>
-        <pre><code><span class="pink">import</span> api.auth.Auth <span class="pink">as</span> Auth
+        <div id="installation">
+            <h2>Installation</h2>
+            <p>1. First, you have to install the requirements and the system core:</p>
+            <ul class="steps">
+                <li>
+                    1.1 Clone the GitHub repository:
+                    <br />
+                    <pre><code>git clone https://github.com/NeurodataLab/api-service</code></pre>
+                </li>
+                <li>
+                    1.2 Go to the Python folder:
+                    <br />
+                    <pre><code>cd api-service/python</code></pre>
+                </li>
+                <li>
+                    1.3 Install requirements:
+                    <br />
+                    <pre><code>python2 [python3] -m pip install -r -requirements.txt</code></pre>
+                </li>
+                <li>
+                    1.4 Create proto files for the gRPC:
+                    <br />
+                    <pre><code>source ./make_proto_python2.sh [make_proto_python3.sh]</code></pre>
+                    <br />
+                    1.5 All generated files will be placed into <br />
+                    <pre><code>api-service/python/pyproto</code></pre>
+                </li>
+            </ul>
+            <p>
+                2. After successful installation you will have to add the keys to the system:
+            </p>
+            <ul class="steps">
+                <li>
+                    2.1 Download each key from your personal account. There will be 4 files. Read more about them at <a href="grpc.io">grpc.io</a>
+                </li>
+                <li>
+                    2.2 Create a subfolder under
+                    <pre><code>api-service/cert</code></pre>
+                    with any name you want, for example my_key
+                </li>
+                <li>
+                    2.3 Put the 4 files to this subfolder
+                    <pre><code>api-service/cert/my_key/</code></pre>
+                </li>
+            </ul>
+        </div>
+        <div id="usage">
+            <h2>Usage</h2>
+            <p>
+                Before use, don’t forget to add api-service/python and api-service/python/pyproto to PYTHONPATH environment variable.
+                First, you will have to authorize in the service:
+            </p>
+            <pre><code><span class="pink">import</span> api.auth.Auth <span class="pink">as</span> Auth
 <span class="pink">import</span> os.path <span class="pink">as</span> osp
+
+
+
 
 cert_home = osp.join(osp.dirname(osp.abspath(__file__)), <span class="violet">'../cert/my_key'</span>)
 
@@ -87,31 +155,57 @@ ssl_auth = Auth.SslCredential(osp.join(cert_home, <span class="violet">'client.k
                               osp.join(cert_home, <span class="violet">'ca.crt'</span>))
 
 key_auth = Auth.AuthCredential(<span class="violet">'emotionsdemo.com:50051'</span>, osp.join(cert_home, <span class="violet">'root.json'</span>), ssl_auth)</code></pre>
-        <p>
-            After successful authorization, you can use the modules supported by your key. For detailed information about the modules see Modules Info. Also, you can see an example on our GitHub page api-service/python/demo.py
-        </p>
-    </div>
-    <div id="classes" class="link">
-        <h2>Classes</h2>
-        <h3>Image</h3>
-        <p>
-            To process an image, you will first have to prepare it.
-        </p>
-        <pre><code>from api.utils.image import Image</code></pre>
-        <p>
-            You can initialize Image instance from the path
-        </p>
-        <pre><code>image = Image.from_file('some_image.jpg')</code></pre>
-        <p>
-            Or you can initialize Image instance from a cv2-like image
-        </p>
-        <pre><code>image = Image.from_bgr(bgr_image)</code></pre>
-        <p>
-            After initialization, you can process this image via the module which supports image processing, for example: <a href="#fd">Face Detector</a>
-        </p>
-        <p>
-            See example on the GitHub page.
-        </p>
+<!--        <p>-->
+<!--            After successful authorization, you can use the modules supported by your key. For detailed information about the modules see Modules Info. Also, you can see an example on our GitHub page api-service/python/demo.py-->
+<!--        </p>-->
+<!--    </div>-->
+<!--    <div id="classes" class="link">-->
+<!--        <h2>Classes</h2>-->
+<!--        <h3>Image</h3>-->
+<!--        <p>-->
+<!--            To process an image, you will first have to prepare it.-->
+<!--        </p>-->
+<!--        <pre><code>from api.utils.image import Image</code></pre>-->
+<!--        <p>-->
+<!--            You can initialize Image instance from the path-->
+<!--        </p>-->
+<!--        <pre><code>image = Image.from_file('some_image.jpg')</code></pre>-->
+<!--        <p>-->
+<!--            Or you can initialize Image instance from a cv2-like image-->
+<!--        </p>-->
+<!--        <pre><code>image = Image.from_bgr(bgr_image)</code></pre>-->
+<!--        <p>-->
+<!--            After initialization, you can process this image via the module which supports image processing, for example: <a href="#fd">Face Detector</a>-->
+<!--        </p>-->
+<!--        <p>-->
+<!--            See example on the GitHub page.-->
+<!--        </p>-->
+            <p>
+                After successful authorization, you can use the modules supported by your key. For detailed information about the modules see Modules Info. Also, you can see an example on our GitHub page api-service/python/demo.py
+            </p>
+        </div>
+        <div id="classes">
+            <h2>Classes</h2>
+            <h3>Image</h3>
+            <p>
+                To process an image, you will first have to prepare it.
+            </p>
+            <pre><code>from api.utils.image import Image</code></pre>
+            <p>
+                You can initialize Image instance from the path
+            </p>
+            <pre><code>image = Image.from_file('some_image.jpg')</code></pre>
+            <p>
+                Or you can initialize Image instance from a cv2-like image
+            </p>
+            <pre><code>image = Image.from_bgr(bgr_image)</code></pre>
+            <p>
+                After initialization, you can process this image via the module which supports image processing, for example: <a href="#fd">Face Detector</a>
+            </p>
+            <p>
+                See example on the GitHub page.
+            </p>
+        </div>
     </div>
     <h3>API modules</h3>
     <div id="fd" class="link">

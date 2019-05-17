@@ -112,7 +112,7 @@ myAjaxWidget::end();
     ]])->widget(ReCaptcha2::className(),[   'siteKey'=>'6LcozJ4UAAAAAEY1Sh9IUGx8Kq1DBVqalpgTirm0'])->label(false)?>
 
     <div class="inp-wr remember">
-        <label>I agree with Terms
+        <label>I agree with <a href="terms.html">Terms</a>
             <?=Html::activeInput("checkbox", $register, "legal_term",['value'=>1,'checked'=>false])?>
             <span class="checkmark"></span>
 
@@ -126,7 +126,7 @@ myAjaxWidget::end();
     myAjaxWidget::end();
 
     ?>
-    <p class="informer">Have an account? Login</p>
+<!--    <p class="informer">Have an account? Login</p>-->
 </div>
 
 <div id="reset">
