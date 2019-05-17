@@ -13,6 +13,7 @@ use yii\db\ActiveRecord;
  * @property string $email
  * @property string $password_hash
  * @property string $purpose
+ * @property string $reset_password_hash
  * @property string $country
  * @property string $city
  * @property int $user_type
@@ -27,6 +28,10 @@ use yii\db\ActiveRecord;
  * @property int register_date
  * @property int last_visit
  * @property int update_at
+ * @property int $parent_unit_id
+ * @property string $username
+ * @property string $FdChecker
+ * @property string $ErChecker
  */
 class User extends ActiveRecord implements \yii\web\IdentityInterface
 {
@@ -66,7 +71,7 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
      * */
     public function sendConfirmEmail(){
         Yii::$app->mailer->compose("confirm-email",["user"=>$this])
-            ->setFrom('from@domain.com')
+            ->setFrom('test@devlained.ru')
             ->setTo($this->email)
             ->setSubject('Confirm your password')
             ->send();
@@ -166,4 +171,13 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
         $this->image = $image_name;
         $this->save(false);
     }
+
+    public function getStripe(){
+        return $this->hasOne(myStripe::className(), ["userID"=>"id"]);
+    }
+
+    public function getApiUser(){
+        return $this->hasOne(UserAPIKeys::className(), ["userID"=>"id"]);
+    }
+
 }

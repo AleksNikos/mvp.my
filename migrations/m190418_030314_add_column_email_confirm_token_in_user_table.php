@@ -12,7 +12,7 @@ class m190418_030314_add_column_email_confirm_token_in_user_table extends Migrat
      */
     public function safeUp()
     {
-        $this->addColumn("user", "email_confirm_token", $this->string()->notNull());
+        $this->addColumn("user", "email_confirm_token", $this->string()->notNull()); //токен для подтверждения электронной почты
     }
 
     /**

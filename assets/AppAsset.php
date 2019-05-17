@@ -34,14 +34,7 @@ class AppAsset extends AssetBundle
     public $js = [
 
         /*Шаблонные файлы*/
-        'js/canvasjs.min.js',
-        'js/Chart.js',
-        'js/chartjs-plugin-stacked100.js',
-        'js/EJSChart.min.js',
-        'js/index.js',
-        'js/jquery.fancybox.min.js',
-        'js/main.js',
-        'js/wow.min.js',
+
     ];
     public $depends = [
         'yii\web\YiiAsset',

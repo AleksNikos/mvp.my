@@ -28,7 +28,7 @@ phpunit.phar
 
 tests/_output/*
 tests/_support/_generated
-views/DEV dashboard/*
+*/DEV dashboard/*
 views/�������/*
 
 

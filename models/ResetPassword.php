@@ -21,6 +21,7 @@ class ResetPassword extends Model
         return [
             [['email','verify_code'],'required'],
             [['email'],'email'],
+            ['email','filter', 'filter' => 'trim'],
 
             /*êàï÷à îò ãóãë*/
             [['verify_code'], ReCaptchaValidator2::className(), 'uncheckedMessage' => 'Please confirm that you are not a bot.'],
@@ -28,7 +29,7 @@ class ResetPassword extends Model
     }
     public function sendMessage($user){
         Yii::$app->mailer->compose("reset",["user"=>$user])
-            ->setFrom('from@domain.com')
+            ->setFrom('test@devlained.ru')
             ->setTo($this->email)
             ->setSubject('You are invited to participate')
             ->send();

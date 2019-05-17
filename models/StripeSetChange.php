@@ -10,6 +10,7 @@ namespace app\models;
 
 
 use Stripe\AccountTest;
+use Stripe\Charge;
 use Stripe\Customer;
 use Stripe\Stripe;
 use Stripe\Token;
@@ -28,12 +29,6 @@ class StripeSetChange
     {
         require_once(Yii::getAlias("@vendor/").'stripe/stripe-php/init.php');
         Stripe::setApiKey("sk_test_WvgbVGZc4qHh5lF78vUWfB9Z00ZtIRxK38");
-        $card = $this->createCard();
-        $customer = $this->createCustomer($card->id);
-        var_export($customer);die;
-//        $createdCard = $customer->sources->create(array("card" => $card->id));
-//        $customer->save();
-//        $this->custormer = $customer;
     }
 
     public function createCustomer($id=null)
@@ -59,9 +54,29 @@ class StripeSetChange
 
     }
 
-    public static function cardInfo ($customerID) {
+    public function cardInfo ($customerID) {
         $updatedCustomer = Customer::retrieve($customerID);
         $updatedCards = $updatedCustomer->sources->all();
         return $updatedCards;
+    }
+
+
+    /*
+     * формирует объект списания средств.
+     *
+     * */
+    public function createCharge($amount,$cus){
+        $charge = Charge::create([
+            "amount"=>$amount,
+            "currency" => "usd",
+            "description" => "Payment for using nlab service Nlab",
+//            "balance_transaction"=>"txn_19XJJ02eZvKYlo2ClwuJ1rbA", //тестовое значение
+//            "source"=>$cardID,
+            "customer"=>$cus
+
+        ]);
+
+        return $charge;
+
     }
 }

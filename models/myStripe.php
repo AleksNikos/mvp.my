@@ -7,6 +7,7 @@ use Stripe\Stripe;
 use Stripe\Token;
 use function substr;
 use Yii;
+use yii\base\Exception;
 
 /**
  * This is the model class for table "stripe".
@@ -103,6 +104,6 @@ class myStripe extends \yii\db\ActiveRecord
         $this->stripeID = $customer->id;
         $this->userID = Yii::$app->user->getId();
         $this->lastNumbers = substr($this->cardNumber,-4); // получаем 4 последние цифры карты.
-}
+    }
 
 }

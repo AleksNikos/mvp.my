@@ -17,8 +17,9 @@ class m190417_222531_add_keys_table extends Migration
             "created"=>$this->integer(), //дата создания
             "updated"=>$this->integer()->defaultValue(time()), //дата обновления
             "value"=>$this->integer()->notNull(), //значение ключа
-            "user_id"=>$this->integer()->notNull(), // ID пользователя к которому пренадлежит ключ
+            "userID"=>$this->integer()->notNull(), // ID пользователя к которому пренадлежит ключ
             "IS_ACTIVATED"=>$this->boolean()->defaultValue(false), //активен ли ключ.
+
         ]);
     }
 

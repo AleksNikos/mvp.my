@@ -11,6 +11,7 @@ namespace app\controllers;
 
 use app\models\AddUserByEmail;
 use app\models\ChangePassword;
+use app\models\Keys;
 use app\models\SetNewPassword;
 use app\models\UploadImage;
 use app\models\User;
@@ -80,7 +81,8 @@ class AgentController extends Controller
 
     public function actionKeys () {
         if(Yii::$app->user->can("ActiveUnitUser", ['active'=>'1'])){
-            return $this->render('/user/keys');
+            $model = Keys::find()->where(["user_id"=>Yii::$app->user->getId()])->all();
+            return $this->render('/user/keys', ["model"=>$model]);
         }else{
             $this->accessDenied();
         }

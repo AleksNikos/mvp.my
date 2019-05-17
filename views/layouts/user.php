@@ -7,7 +7,8 @@
  */
 use app\assets\UserAsset;
 use app\models\AddUserByEmail;
-use yii\bootstrap\ActiveForm;
+use app\widgets\myAjaxWidget;
+use yii\widgets\ActiveForm;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\helpers\Html;
@@ -29,39 +30,39 @@ $(".add-user-form [type=mail]").keyup(function() {
    }
 });
 
-$("button.add-user").click(function() {
-   event.preventDefault();
-   var data = $(".add-user-form").serialize();
-  responce = "";
-  errors = "";
-  
-  
-   $.ajax({
-            url: '/user/ajax-add-user',
-            type: 'POST',
-            data: data,
-            success: function(res){
-                responce = JSON.parse(res);
-                if (responce.errors){
-                  for(var r in responce){
-                        var respArr = responce[r];
-                        for(var i in respArr){
-                            errors = errors + respArr[i] + '\\n\\r';
-                        }
-                  }
-                  alert(errors); 
-                }
-                if(responce.save){
-                    alert("User added");
-                    $.fancybox.close();
-                }
-            },
-            error: function(er){
-                console.log(er);
-            }
-        });
-});
-   
+//$("button.add-user").click(function() {
+//   event.preventDefault();
+//   var data = $(".add-user-form").serialize();
+//  responce = "";
+//  errors = "";
+//  
+//  
+//   $.ajax({
+//            url: '/user/ajax-add-user',
+//            type: 'POST',
+//            data: data,
+//            success: function(res){
+//                responce = JSON.parse(res);
+//                if (responce.errors){
+//                  for(var r in responce){
+//                        var respArr = responce[r];
+//                        for(var i in respArr){
+//                            errors = errors + respArr[i] + '\\n\\r';
+//                        }
+//                  }
+//                  alert(errors); 
+//                }
+//                if(responce.save){
+//                    alert("User added");
+//                    $.fancybox.close();
+//                }
+//            },
+//            error: function(er){
+//                console.log(er);
+//            }
+//        });
+//});
+//   
 JS;
 $this->registerJS($scriptAddUser);
 
@@ -83,13 +84,22 @@ $controllerID = Yii::$app->controller->id;
 <?php $this->beginBody() ?>
 <div class="topnav">
     <div id="menu">
-        <a href="#news">Home</a>
-        <a href="#contact">Docs</a>
-        <a class="active" href="#about">Dashboard</a>
+        <a href="/">Home</a>
+        <a href="/docs">Docs</a>
+        <?php
+        $role = Yii::$app->authManager->getRolesByUser(Yii::$app->user->getId());
+        if($role['ROLE_UNIT']){
+            echo "<a href='/user/'>Dashboard</a>";
+        }else if($role['ROLE_AGENT']){
+            echo "<a href='/agent/'>Dashboard</a>";
+        }else{
+            echo "<a href=\"/login\">Dashboard</a>";
+        }
+        ?>
     </div>
 </div>
 
-<section id="<?=$this->params['pageID']?>" class="<?=$this->params['pageID']?>">
+<div id="<?=$this->params['pageID']?>" class="<?=$this->params['pageID']?>">
     <div class="wrapper">
         <div class="row">
             <div class="block-wrapper svg">
@@ -244,8 +254,8 @@ $controllerID = Yii::$app->controller->id;
                             <?php
                                 if($role["ROLE_UNIT"]) {
                                     ?>
-                                    <li class="<?= $this->params['pageID'] == "payment" ? "active" : "" ?>">
-                                        <a href="/<?=$controllerID?>/payment">
+                                    <li class="<?= $this->params['pageID'] == "payments" ? "active" : "" ?>">
+                                        <a href="/<?=$controllerID?>/payments">
                                             <svg width="20px" height="15px" viewBox="0 0 27 20" version="1.1"
                                                  xmlns="http://www.w3.org/2000/svg"
                                                  xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -388,7 +398,7 @@ $controllerID = Yii::$app->controller->id;
             </div>
         </div>
     </div>
-</section>
+</div>
 
 <section id="chart-full" class="chart-full">
     <div class="wrapper">
@@ -418,7 +428,9 @@ $controllerID = Yii::$app->controller->id;
         </div>
     </div>
 </section>
+
 <div id="add-user">
+
     <a class="close-btn" onclick="$.fancybox.close();" href="javascript:;">
         <img src="/img/close.svg" alt="">
     </a>
@@ -428,8 +440,16 @@ $controllerID = Yii::$app->controller->id;
     <div class="text">
         You control your teammates access and their expenses will be charged from your account.
     </div>
-
-    <form class="add-user-form" method="post" action="/user/ajax-add-user">
+<?php
+myAjaxWidget::begin([
+    "formSelector" =>".add-user-form",
+    "submitSelector" => ".add-user",
+    "link"=>"/user/ajax-add-user",
+    "successMethod" => "ajaxSuccess()",
+    "afterMethod" => "setWarnings('.add-user-form')"
+]);
+?>
+    <form class="add-user-form">
         <div class="inp-wr">
             <div class="info">
                 Teammate email
@@ -462,11 +482,109 @@ $controllerID = Yii::$app->controller->id;
                 <span class="checkmark"></span>
             </label>
         </div>
+        <div class="inp-wr" style="border: none; margin-bottom: 0">
+            <input type="mail" name="AddUserByEmail[Er]"  disabled>
+        </div>
         <button disabled="true" class="add-user">
             add user
         </button>
     </form>
-</div><?php $this->endBody() ?>
+    <?php myAjaxWidget::end();?>
+</div>
+
+<div id="success" style="
+    border-radius: 8px;
+    background-color: rgba(30, 37, 73, 0.9);
+    padding: 25px 30px 30px 30px;
+    display: none;
+    overflow-x: hidden;
+    font-size: 18px;
+    font-family: inherit;
+    font-weight: 300;
+    line-height: 1.39;
+    letter-spacing: 0.5px;
+    color: #6673b4;
+
+">
+    <div class="title">
+        Information for you
+    </div>
+    <a class="close-btn" onclick="$.fancybox.close()" href="javascript:$.fancybox.close();">
+        <img src="/img/close.svg" alt="">
+    </a>
+
+    <p class="informer" style="    margin-top: 20px;">
+
+    </p>
+</div>
+
+<div id="add-key">
+    <a class="close-btn" onclick="$.fancybox.close();" href="javascript:;">
+        <img src="/img/close.svg" alt="">
+    </a>
+    <div class="title">
+        Add key
+    </div>
+    <?
+        myAjaxWidget::begin([
+            "formSelector" =>".add-key-form",
+            "submitSelector" => ".create",
+            "link"=>"/user/add-key",
+            "afterMethod" => "setWarnings('.add-key-form')",
+            "successMethod" => "ajaxSuccess()",
+
+
+        ]);
+
+        $form = ActiveForm::begin([
+
+                "options" => [
+                        "class"=>"add-key-form",
+                    "action"=>"/user/users",
+                ]
+        ])
+    ?>
+<!--    <form class="add-key-form">-->
+        <div class="inp-wr">
+            <input type="text" name="Keys[name_key]" placeholder="Name in dashboard">
+        </div>
+        <div class="text">
+            Choose engines the key will use:
+        </div>
+        <div class="checkboxes">
+            <label class="fd">
+					<span class="icon">
+						<img src="/img/icon-fd.svg" alt="">
+					</span>
+                <span class="name">
+						Face <br />
+						detector
+					</span>
+                <input class="hidden" name="Keys[Fd]" value="1" type="checkbox">
+                <span class="checkmark"></span>
+            </label>
+            <label class="er">
+					<span class="icon">
+						<img src="/img/icon-er.svg" alt="">
+					</span>
+                <span class="name">
+						Emotion <br />
+						recognition
+					</span>
+                <input class="hidden" name="Keys[Er]" value="1" type="checkbox">
+                <span class="checkmark"></span>
+            </label>
+        </div>
+        <button class="create">
+            create
+        </button>
+<!--    </form>-->
+    <?php
+        ActiveForm::end();
+        myAjaxWidget::end();
+    ?>
+</div>
+<?php $this->endBody() ?>
 
 <div id="full-width-mobile-chart">
     <a class="close-btn" onclick="$.fancybox.close();" href="javascript:;">

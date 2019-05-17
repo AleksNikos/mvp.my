@@ -6,7 +6,7 @@
  * Time: 9:08
  */
 use yii\helpers\Html;
-
+$this->params['pageID']="dashboard";
 ?>
-Аккаунт активирован!
-<?=Html::a("OK",["user/index"],["class"=>"btn btn-success"])?>
+<p style="color:white;">Аккаунт активирован!</p>
+<?=Html::a("OK",["user/index"],["class"=>"btn btn-success", "style"=>"color:white"])?>

@@ -2,10 +2,17 @@
 
 namespace app\controllers;
 
+
+
+use app\models\APIConnector;
+use app\models\Cron;
+use app\models\Keys;
 use app\models\Register;
 use app\models\ResetPassword;
 use app\models\SetNewPassword;
 use app\models\User;
+use function phpinfo;
+use function trim;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -35,12 +42,14 @@ class SiteController extends Controller
                     ],
                 ],
             ],
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'logout' => ['post'],
-                ],
-            ],
+
+
+//            'verbs' => [
+//                'class' => VerbFilter::className(),
+//                'actions' => [
+//                    'logout' => ['post'],
+//                ],
+//            ],
         ];
     }
 
@@ -61,21 +70,32 @@ class SiteController extends Controller
     }
 
     public function actionReset(){
-        $model = new ResetPassword();
+       if(Yii::$app->request->isPost){
+           Yii::$app->response->format = Response::FORMAT_JSON;
+           $model = new ResetPassword();
+           if($model->load(Yii::$app->request->post())){
 
-        if($model->load(Yii::$app->request->post())){
-            if($user = User::findOne(["email"=>$model->email, 'IS_DEFAULT'=>0])){
-                $user->reset_password_hash = Yii::$app->security->generateRandomString();
-                $user->save();
-                $model->sendMessage($user);
-                return $this->redirect(["site/reset-ok"]);
-            }
-            else{
-                $model->addError("email",["This email does not exist"]);
-            }
-        }
+               if($user = User::find()->where(["email"=>trim($model->email), 'IS_DEFAULT'=>0])->one()){
+                   $user->reset_password_hash = Yii::$app->security->generateRandomString();
+                   $user->save();
+                   $model->sendMessage($user);
+                   $response['success']="A message with a link to reset your password has been sent to your email.";
+                   return $response;
+//                   return $this->redirect(["site/reset-ok"]);
+               }
+               else{
+                   $model->addError("email",["This email does not exist"]);
+                   $response['error']= $model->errors;
+                   return $response;
+               }
+           }else{
+               $response['error']= $model->errors;
+               return $response;
+           }
+       }
+        return $this->redirect("/");
 
-        return $this->render("reset", ["model"=>$model]);
+//        return $this->render("reset", ["model"=>$model]);
     }
 
     public function actionResetOk(){
@@ -109,7 +129,11 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $model = new LoginForm();
+        $register = new Register();
+        $reset = new ResetPassword();
+        $this->layout = "index";
+        return $this->render('index',["model"=>$model, "register"=>$register, 'reset'=>$reset]);
     }
 
     /**
@@ -119,28 +143,34 @@ class SiteController extends Controller
      */
     public function actionLogin()
     {
-        /*
-         * разлогиниваем пользоавтеля
-         * */
-        if (!Yii::$app->user->isGuest) {
-            Yii::$app->user->logout();
-        }
+        Yii::$app->response->format = Response::FORMAT_JSON;
+       if(Yii::$app->request->isPost){
 
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            $role = Yii::$app->authManager->getRolesByUser(Yii::$app->user->getId());
-            if($role["ROLE_UNIT"]){
-                return $this->redirect("/user/index");
-            }else if($role["ROLE_AGENT"]){
-                return $this->redirect("/agent/keys");
-            }
+           //Разлогиниваем пользователя
+           if (!Yii::$app->user->isGuest) {
+               Yii::$app->user->logout();
+           }
 
-        }
+           $model = new LoginForm();
+           if ($model->load(Yii::$app->request->post()) && $model->login()) {
+               $role = Yii::$app->authManager->getRolesByUser(Yii::$app->user->getId());
+               if($role["ROLE_UNIT"]){
+                   return $this->redirect("/user/index");
+               }else if($role["ROLE_AGENT"]){
+                   return $this->redirect("/agent/keys");
+               }
 
-        $model->password = '';
-        return $this->render('login', [
-            'model' => $model,
-        ]);
+           }
+           $response['error']=$model->errors;
+           return $response;
+
+       }
+
+//        $model->password = '';
+//        return $this->render('login', [
+//            'model' => $model,
+//        ]);
+        return $this->redirect("/");
     }
 
     /**
@@ -152,7 +182,7 @@ class SiteController extends Controller
     {
         Yii::$app->user->logout();
 
-        return $this->redirect("/login");
+        return $this->redirect("/");
     }
 
     /**
@@ -187,45 +217,55 @@ class SiteController extends Controller
     */
     public function actionRegister(){
 
-        $model = new Register();
-        Yii::$app->user->logout();
-        if($model->load(Yii::$app->request->post())){
-            $model->addParametersInModel();
-            if($model->save(false)){// восстановить
+        if(Yii::$app->request->isPost){
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            $model = new Register();
+            Yii::$app->user->logout();
+            if($model->load(Yii::$app->request->post())){
+                $model->addParametersInModel();
+//            $this->var_export($model);
+                if($model->save(false)){// восстановить
+//                    $this->var_export($model);
+                    /*Создаем дефолтового юзера*/
+                    $default_user = new Register();
+                    $default_user->setAttributes($model->getAttributes(), false);
+                    $default_user->parameterDefautUser($model->id); //устанавливаем дефолтовые параметры.
+                    $default_user->save(false);//отключили валидаци. т.к. это полная копия изначальной модели
 
-                /*Создаем дефолтового юзера*/
-                $default_user = new Register();
-                $default_user->setAttributes($model->getAttributes(), false);
-                $default_user->parameterDefautUser($model->id); //устанавливаем дефолтовые параметры.
-                $default_user->save(false);//отключили валидаци. т.к. это полная копия изначальной модели
+                    /*Устанавливаем роли*/
+                    $ROLE_UNIT = Yii::$app->authManager->getRole("ROLE_UNIT");
+                    $ROLE_AGENT = Yii::$app->authManager->getRole("ROLE_AGENT");
 
-                /*Устанавливаем роли*/
-                $ROLE_UNIT = Yii::$app->authManager->getRole("ROLE_UNIT");
-                $ROLE_AGENT = Yii::$app->authManager->getRole("ROLE_AGENT");
+                    Yii::$app->authManager->assign($ROLE_UNIT,$model->id);
+                    Yii::$app->authManager->assign($ROLE_AGENT,$default_user->id);
 
-                Yii::$app->authManager->assign($ROLE_UNIT,$model->id);
-                Yii::$app->authManager->assign($ROLE_AGENT,$default_user->id);
+                    //аторизовать пользователя.
+                    $user = User::findIdentity($model->id);
+                    if($user->login()){
+                        // сделать отправку письма
+                        $user->sendConfirmEmail();
+//                        $this->redirect(["user/hello"]);
+                        $response['success'] = "You have successfully registered, an email has been sent to your inbox.";
+                    }else{
+//                    $this->var_export($model->errors);
+                        $response['error']=$model->errors;
+                        return $response;
+                    }
 
-                //аторизовать пользователя.
-                $user = User::findIdentity($model->id);
-                if($user->login()){
-                    // сделать отправку письма
-                    $user->sendConfirmEmail();
-                    $this->redirect(["user/hello"]);
+
                 }else{
-                    $this->var_export($model->errors);
+                    $response['error']=$model->errors;
+                    return $response;
                 }
 
-
-            }else{
-                $this->var_export($model->errors);
             }
-
         }
-        $csv = $this->importCSV("country.csv"); //импортирует csv со всеми странами мира
-        $countrySelect2 = $this->CountrySelect2($csv);
+//        $csv = $this->importCSV("country.csv"); //импортирует csv со всеми странами мира
+//        $countrySelect2 = $this->CountrySelect2($csv);
+        $response['error']=$model->errors;
+        return $response;
 
-        return $this->render("register",["model"=>$model, "countrySelect2"=>$countrySelect2]);
+//        return $this->render("register",["model"=>$model, "countrySelect2"=>$countrySelect2]);
     }
 
     public function CountrySelect2 (array $csv) {
@@ -262,5 +302,55 @@ class SiteController extends Controller
 
     public function actionLegalTerms(){
         return $this->render("legal-terms");
+    }
+
+    public function actionDocs(){
+        $model = new LoginForm();
+        $register = new Register();
+        $reset = new ResetPassword();
+        $this->layout = 'docs';
+        return $this->render('documentation',["model"=>$model, "register"=>$register, 'reset'=>$reset]);
+
+    }
+    public function actionTestApi(){
+
+        /*тест getTokenById работает*/
+//        $connector2 = new APIConnector();
+//        $this->var_export($connector2->getTokenById(Yii::$app->user->identity, 85));
+
+        /*Тест updateToken работает*/
+//        $connector2 = new APIConnector();
+//        $key = Keys::findOne(["id"=>58]);
+////        $this->var_export($connector2->getTokensByUserID(Yii::$app->user->identity));
+//        $this->var_export($connector2->updateToken(Yii::$app->user->identity,$key));
+
+//        $connector2 = new APIConnector(["typeClient"=>1]);
+//        $key = Keys::findOne(["id"=>58]);
+//        $connector2->stopToken($key);
+//        $this->var_export($connector2->getTokensByUserID(Yii::$app->user->identity));
+
+//        $connector2 = new APIConnector(["typeClient"=>2]);
+//        $connector2->keysInfo([112,113]);
+        $connector2 = new APIConnector(["typeClient"=>2]);
+        $this->var_export($connector2->service_info());
+
+        $key = new Keys();
+        $key->createKey();
+        $this->var_export($key);
+
+
+    }
+
+    public function actionCron(){
+        $cron = new Cron();
+        $cron->updateTotalStatistics();
+        $cron->startCalculation();
+        $cron->startChange();
+
+    }
+
+
+    public function actionTestApi2(){
+        @include_once Yii::getAlias("@app/proto/api/auth_service_client.php");
     }
 }

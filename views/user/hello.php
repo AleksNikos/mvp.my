@@ -6,18 +6,18 @@
  * Time: 7:55
  */
 use yii\helpers\Html;
-echo "hello user with email ".$user->email;
+echo "<p style='color:white'>hello user with email ".$user->email."</p>";
 
 if($error==1){
 
-    echo "<br>Неверный ключ активации или пользователь уже активен";
+    echo "<br><p style='color:white'>Неверный ключ активации или пользователь уже активен</p>";
 }
 $this->params['pageID']="dashboard";
 ?>
 <div class="responsive">
 
-    <p>на ваш ящик было отправлено письмо.</p>
-    <?= Html::a('Отправить еще раз', ['/user/hello',"code"=>"1"], ['class'=>'btn btn-primary'])?>
+    <p style="color:white">на ваш ящик было отправлено письмо.</p>
+    <?= Html::a('Отправить еще раз', ['/user/hello',"code"=>"1"], ['class'=>'btn btn-primary', "style"=>"color:white"])?>
 </div>
 
 

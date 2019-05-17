@@ -14,5 +14,5 @@ use yii\widgets\ActiveForm;
 
 <h2>Активируйте ваш ящик</h2>
 
-<?= Html::a('Активировать', Url::toRoute(["mvp.my/user/confirm-email", "code"=>$user->email_confirm_token])) ?>
+<?= Html::a('Активировать', Url::toRoute([$_SERVER['SERVER_NAME']."/user/confirm-email", "code"=>$user->email_confirm_token])) ?>
 </body>

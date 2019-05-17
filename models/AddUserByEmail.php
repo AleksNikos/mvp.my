@@ -124,7 +124,7 @@ class AddUserByEmail extends \yii\db\ActiveRecord
 
     public function sendMessage() {
         Yii::$app->mailer->compose("add-users",["user"=>$this])
-            ->setFrom('from@domain.com')
+            ->setFrom('test@devlained.ru')
             ->setTo($this->email)
             ->setSubject('You are invited to participate')
             ->send();

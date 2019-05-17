@@ -14,5 +14,5 @@ use yii\widgets\ActiveForm;
 
 <h2>Вас пригласили участвовать в проекте</h2>
 
-<?= Html::a('Зарегистрироваться в качестве агента', Url::toRoute(["mvp.my/agent/hello", "code"=>$user->verification_key])) ?>
+<?= Html::a('Зарегистрироваться в качестве агента', Url::toRoute([$_SERVER['SERVER_NAME']."/agent/hello", "code"=>$user->verification_key])) ?>
 </body>

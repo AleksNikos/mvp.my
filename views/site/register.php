@@ -48,13 +48,13 @@ $form = ActiveForm::begin([
     "class"=>"register-from"
 ]);
 ?>
-<?=$form->field($model,"username")->textInput(/*["class"=>"test1-class"]*/)?>
+<?=$form->field($model,"username")->textInput(/*["class"=>"test1-class"]*/)?>//+
 <?=$form->field($model,"email")->textInput(/*["class"=>"test1-class"]*/)?>
 
 <?=$form->field($model,"password")->passwordInput()?>
 <?=$form->field($model,"confirm_password")->passwordInput()?>
 <?=$form->field($model, 'user_type')->radioList([0=>"Individual", 1=>"Entity", 2=>"Science organization"],["id"=>"userType"]) ?>
-<?=$form->field($model,"name_organization")->textInput()?>
+<?=$form->field($model,"name_organization")->textInput()?> //+
 <?=$form->field($model,"purpose")->hiddenInput(["id"=>"purpose", "value"=>"0"])->label("Purpose",["hidden"=>"true"])?>
 <?=$form->field($model,"country")->widget(Select2::className(),[
     "data" =>$countrySelect2,

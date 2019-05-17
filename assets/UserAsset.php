@@ -20,27 +20,22 @@ class UserAsset extends AssetBundle
     public $basePath = '@webroot';
     public $baseUrl = '@web';
     public $css = [
-//        'css/animate.min.css',
-//        'css/hamburgers.min.css',
-        'css/jquery.fancybox.min.css',//+
+        'https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css',//+
         'css/main.css',//+
+        'css/responsive-tables.css',//+
         'css/media.css',//+
-//        'css/smart-grid.css',
         'https://fonts.googleapis.com/css?family=Titillium+Web:200,200i,300,300i,400,400i,600,600i,700,700i,900',//+
     ];
     public $js = [
-        'js/canvasjs.min.js',
-//        'js/Chart.js',
+
         'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js',//+
         'js/chartjs-plugin-stacked100.js',//+
-//        'js/EJSChart.min.js',
-//        'js/index.js',
         'js/jquery.fancybox.min.js',//+
         'js/main.js',
-//        'js/wow.min.js',
+        'js/ajax.js',
+        'js/responsive-tables.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',
-//        'yii\bootstrap\BootstrapAsset',
     ];
 }

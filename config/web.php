@@ -33,6 +33,21 @@ $config = [
             // 'useFileTransport' to false and configure a transport
             // for the mailer to send real emails.
             'useFileTransport' => true,
+            'transport' => [
+                'class' => 'Swift_SmtpTransport',
+                'host' => 'host1759253.hostland.ru',  // e.g. smtp.mandrillapp.com or smtp.gmail.com
+                'username' => 'admin@host1759253.hostland.ru',
+                'password' => 'QXOUmfwl7q',
+                'port' => '465', // Port 25 is a very common port too
+
+
+//                'host' => 'smtp.mail.ru',  // e.g. smtp.mandrillapp.com or smtp.gmail.com
+//                'username' => 'vetal_9406@bk.ru',
+//                'password' => '254258256qqqaaazzz',
+//                'port' => '465', // Port 25 is a very common port too
+                'encryption' => 'ssl', // It is often used, check your provider or mail server specs
+            ],
+
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
@@ -51,7 +66,8 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                '<actions>'=>"site/<actions>"
+                '<actions>'=>"site/<actions>",
+                '<controller>/<actions>'=>'<controller>/<actions>',
             ],
         ],
         'reCaptcha' => [

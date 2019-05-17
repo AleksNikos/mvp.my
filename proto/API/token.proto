@@ -4,11 +4,11 @@ syntax = "proto3";
 package cul;
 
 message UserAuthToken{
-    uint64 uid = 1; //in manager -- from db
-    string login = 2; //in service -- from income request
-    string email = 3; //in service -- from income request
-    repeated uint64 restriction_codes = 6; // in service -- from income request
+    uint64 uid = 1; //id пользователя
+    string login = 2; //логин
+    string email = 3; //email
+    repeated uint64 restriction_codes = 6; // список доступных сервисов
 
-    string expired = 4; //in manager - from current date
-    bytes key = 5; //in manager -- from rd
+    string expired = 4; //действителен до
+    bytes key = 5; //ключ
 }

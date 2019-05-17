@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<!-- Meta -->
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Title -->
+	<title>Home</title>
+	<!-- Fonts -->
+	<link href="https://fonts.googleapis.com/css?family=Titillium+Web:200,200i,300,300i,400,400i,600,600i,700,700i,900" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Fira+Mono:400,500,700&amp;subset=latin-ext" rel="stylesheet">
+	<!-- Styles -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+	<link rel="stylesheet" href="css/home.css">
+	<link rel="stylesheet" href="css/home-media.css">
+</head>
+<body>
+	<div class="topbar-wrap docs">
+		<div class="wrapper">
+			<div class="row">
+				<div class="topbar">
+					<div class="logo">
+						<img src="img/LOGO@4x.svg" alt="logo">
+					</div>
+					<nav>
+						<ul>
+							<li class="docs active">
+								<a class="docs-btn" href="docs.html">
+									<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+								    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+								        <g id="ic-text" fill="#D0D8FF">
+								            <path d="M0,0 L20,0 L20,2 L0,2 L0,0 Z M4,12 L20,12 L20,14 L4,14 L4,12 Z M12,18 L20,18 L20,20 L12,20 L12,18 Z M8,6 L20,6 L20,8 L8,8 L8,6 Z" id="Combined-Shape"></path>
+								        </g>
+								    </g>
+									</svg>
+									DOCS
+								</a>
+							</li>
+							<li  class="login-btn">
+								<a data-fancybox data-src="#login" href="javascript:;">
+									<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg"><path d="M18 0h2v20h-8v-2h6V2H8V0h10zM0 9h12V7l3 2.924L12 13v-2H0V9z" fill="#D0D8FF" fill-rule="evenodd"/></svg>
+									Login
+								</a>
+							</li>
+							<li class="sign_up-btn"><a data-fancybox data-src="#login" href="javascript:;">Sign up</a></li>
+						</ul>
+					</nav>		
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<!-- Menu -->
+	<div class="topnav">
+		<div id="menu">
+			<a class="active" href="index.html">Home</a>
+			<a href="docs.html">Docs</a>
+			<a href="dashboard.html">Dashboard</a>
+		</div>
+	</div>
+	<a href="javascript:void(0);" class="menu icon">
+		<svg width="15px" height="15px" viewBox="0 0 15 15" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+		    <defs>
+		        <linearGradient x1="0%" y1="100%" x2="100%" y2="0%" id="linearGradient-1">
+		            <stop stop-color="#6673B4" offset="0%"></stop>
+		            <stop stop-color="#9EAEFF" offset="100%"></stop>
+		        </linearGradient>
+		    </defs>
+		    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+		        <g id="ic-menu-m" transform="translate(-25.000000, -15.000000)">
+		            <g id="Group-3" transform="translate(25.000000, 15.000000)">
+		                <rect id="Rectangle" fill="#D0D8FF" x="0" y="13" width="15" height="2"></rect>
+		                <rect id="Rectangle" fill="url(#linearGradient-1)" x="0" y="6.5" width="15" height="2"></rect>
+		                <rect id="Rectangle" fill="#D0D8FF" x="0" y="0" width="15" height="2"></rect>
+		            </g>
+		        </g>
+		    </g>
+		</svg>
+	</a>
+	<!-- End menu -->
+	<section id="docs" class="docs">
+		<div class="wrapper">
+			<div class="row">
+				<nav class="vertical-nav">
+					<div class="title">
+						Documentation
+					</div>
+					<ul>
+						<li class="api_client"><a href="#api_client"><span>API client</span></a></li>
+						<li><a href="#installation">Installation</a></li>
+						<li><a href="#usage">Usage</a></li>
+						<li><a href="#classes">Classes</a></li>
+						<li class="fd"><a href="#fd"><span>Face detector module</span></a></li>
+						<li class="er"><a href="#er"><span>Emotion recognition module</span></a></li>
+					</ul>
+				</nav>
+				<div class="content-docs">
+					<div id="api_client" class="link">
+						<h1 class="title">
+							API client
+						</h1>
+						<p>
+							Our system works with the <span>gRPC service</span> developed by Google. It allows data transferring to the server quickly and safely, with no need to worry if someone intercepts your requests. You can read more about the gRPC service on the official website: <a href="grpc.io">grpc.io</a>
+
+							Before using the API, you have to register and create a new key, or download a free trial key in case you want to test the service. You can choose as many modules as you want.
+							<br><br>
+							Show setup for: Ubuntu: 16 <span class="round_gradient">18</span> + Python: 2,7 <span class="round_gradient">3,7</span>
+						</p>
+					</div>
+					<div id="installation" class="link">
+						<h2>Installation</h2>
+					<p>1. First, you have to install the requirements and the system core:</p>
+					<ul class="steps">
+						<li>
+							1.1 Clone the GitHub repository: 
+							<br />
+<pre><code>git clone https://github.com/NeurodataLab/api-service</code></pre>
+						</li>
+						<li>
+							1.2 Go to the Python folder:
+							<br /> 
+<pre><code>cd api-service/python</code></pre>
+						</li>
+						<li>
+							1.3 Install requirements: 
+							<br />
+<pre><code>python2 [python3] -m pip install -r -requirements.txt</code></pre>
+						</li>
+						<li>
+							1.4 Create proto files for the gRPC:
+							<br />
+<pre><code>source ./make_proto_python2.sh [make_proto_python3.sh]</code></pre>
+							<br />
+							1.5 All generated files will be placed into <br />
+<pre><code>api-service/python/pyproto</code></pre>
+						</li>
+					</ul>
+					<p>
+						2. After successful installation you will have to add the keys to the system:
+					</p>
+					<ul class="steps">
+						<li>
+							2.1 Download each key from your personal account. There will be 4 files. Read more about them at <a href="grpc.io">grpc.io</a>
+						</li>
+						<li>
+							2.2 Create a subfolder under
+<pre><code>api-service/cert</code></pre> 
+							with any name you want, for example my_key
+						</li>
+						<li>
+							2.3 Put the 4 files to this subfolder 
+<pre><code>api-service/cert/my_key/</code></pre>
+						</li>
+					</ul>
+					</div>
+					<div id="usage" class="link">
+						<h2>Usage</h2>
+					<p>
+						Before use, don’t forget to add api-service/python and api-service/python/pyproto to PYTHONPATH environment variable.
+
+						First, you will have to authorize in the service:
+					</p>
+<pre><code><span class="pink">import</span> api.auth.Auth <span class="pink">as</span> Auth
+<span class="pink">import</span> os.path <span class="pink">as</span> osp
+
+cert_home = osp.join(osp.dirname(osp.abspath(__file__)), <span class="violet">'../cert/my_key'</span>)
+
+ssl_auth = Auth.SslCredential(osp.join(cert_home, <span class="violet">'client.key'</span>),
+                              osp.join(cert_home, <span class="violet">'client.crt'</span>),
+                              osp.join(cert_home, <span class="violet">'ca.crt'</span>))
+
+key_auth = Auth.AuthCredential(<span class="violet">'emotionsdemo.com:50051'</span>, osp.join(cert_home, <span class="violet">'root.json'</span>), ssl_auth)</code></pre>
+					<p>
+						After successful authorization, you can use the modules supported by your key. For detailed information about the modules see Modules Info. Also, you can see an example on our GitHub page api-service/python/demo.py
+					</p>
+					</div>
+					<div id="classes" class="link">
+						<h2>Classes</h2>
+						<h3>Image</h3>
+						<p>
+							To process an image, you will first have to prepare it.
+						</p>
+<pre><code>from api.utils.image import Image</code></pre>
+						<p>
+							You can initialize Image instance from the path
+						</p>
+<pre><code>image = Image.from_file('some_image.jpg')</code></pre>
+						<p>
+							Or you can initialize Image instance from a cv2-like image
+						</p>
+<pre><code>image = Image.from_bgr(bgr_image)</code></pre>
+						<p>
+							After initialization, you can process this image via the module which supports image processing, for example: <a href="#fd">Face Detector</a>
+						</p>
+						<p>
+							See example on the GitHub page.
+						</p>
+					</div>
+					<h3>API modules</h3>
+					<div id="fd" class="link">
+						<h3>Face Detector</h3>
+						<p>
+							Face Detector module supports image processing. See how to <a href="#fd_image">initialize Image instance</a>
+						</p>
+						<h4 id="fd_init">Initialization</h4>
+						<p>
+							Import FaceDetector module to your project
+<pre><code>import api.recognition.FaceDetection as FD</code></pre>
+						</p>
+						<p>
+							Create FaceDetector instance with your authentication key (see  <a href="#usage">ClientApi/Usage</a>)
+<pre><code>face_detector = FD.FaceDetector(key_auth)</code></pre>
+						</p>
+						<h4 id="fd_image">Image processing</h4>
+						<p>
+							To process an image, you will first need to create Image instance (see <a href="#classes">ClienAPI/Classes/Image</a>). Then, you can process the image via Face Detector. Note, that this is a blocking operation.
+						</p>
+<pre><code>image_result, status, error_msg = face_detector.on_image(image)</code></pre>
+						<p>
+							If status==2, some errors occurred. You can see a detailed error description in error_msg. Otherwise, Face Detector processed the image correctly, and the result will appear in the image_result variable.
+						</p>
+						<p>
+							Face Detector result type is dict, contains one field ‘FaceDetector’, and
+						</p> 
+<pre><code>image_result[‘FaceDetector’]</code></pre>
+							<p>contains a list-like array of detected faces. Each face is a dict with ‘x’, ‘y’, ‘w’ and ‘h’ fields in cv-like coordinates.</p>
+
+							<p>Sample result:</p>
+<pre><code>[{‘x’: 10, ‘y’: 20, ‘w’: 40, ‘h’: 45}, 
+{‘x’: 100, ‘y’: 30, ‘w’: 45, ‘h’: 45}]</code></pre>
+						<p>You can see more examples on the GitHub page.</p>
+					</div>
+					<div id="er" class="link">
+						<h3>Emotion Recognition</h3>
+						<p>
+							Emotion Recognition module supports image processing. See how to <a href="#classes">initialize Image instance</a>
+						</p>
+						<h4 id="er_init">
+							Initialization
+						</h4>
+						<p>
+							Import EmotionRecognition module to your project
+<pre><code>import api.recognition.EmotionRecognition as ER</code></pre>
+						</p>
+						<p>
+							Create EmotionRecognition instance with your authentication key (see <a href="#usage">ClientApi/Usage</a>)
+<pre><code>emo_recognizer = ER.EmotionRecognition(key_auth)</code></pre>
+						</p>
+						<h4 id="er_image">Image processing</h4>
+						<p>
+							To process an image, you need first create Image instance (see <a href="#classes">ClienAPI/Classes/Image</a>). Then, you can process the image via Emotion Recognition. Note, that this is a blocking operation.
+						</p>
+<pre><code>image_result, status, error_msg = emo_recognizer.on_image(image)</code></pre>
+						<p>
+							If status==2, some errors occurred. You can see a detailed error description in error_msg. Otherwise, Emotion Recognition processed the image correctly, and the result will appear in the image_result variable.
+						</p>
+						<p>
+							Emotion Recognition result type is dict, contains two fields: ‘FaceDetector’ and ‘EmotionRecognition’. Data in ‘FaceDetector’ field is identical to Face Detector result <a href="#fd_image">APIModules/FaceDetector/ImageProcessing</a>
+						</p>
+						<p>
+							Sample result:
+						</p>
+<pre><code>[{‘x’: 10, ‘y’: 20, ‘w’: 40, ‘h’: 45, "emotions": [ 
+	[0.9151450991630554, "Surprise"], 
+	[0.07965227961540222, "Happiness"], 
+	[0.004168621730059385, "Anxiety"], 
+	[0.0005960435955785215, "Anger"], 
+	[0.00035987311275675893, "Neutral"], 
+	[7.289356290129945e-05, "Sadness"],
+	[5.118385161040351e-06, "Disgust"]
+]}]</code></pre>
+						<p>You can see more examples on the GitHub page.</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<footer id="footer" class="footer">
+		<div class="wrapper">
+			<div class="row">
+				<div class="logo">
+					<img src="img/logo-full.svg" alt="logo">
+					<span>© 11111100011</span>
+				</div>
+				<div class="links">
+					<div class="company_name">
+						Neurodata Lab © 11111100011
+					</div>
+					<a href="#">support@neurodatalab.dev</a>
+					<a href="#">f.a.q.</a>
+					<a href="#">terms</a>
+				</div>
+			</div>
+		</div>
+	</footer>
+	<!-- modal windows -->
+	<!-- login -->
+	<div id="login">
+		<a class="close-btn" onclick="$.fancybox.close();" href="javascript:;">
+			<img src="img/close.svg" alt="">
+		</a>
+		<div class="tab">
+			<button class="tablinks login-btn-tab" onclick="tab_login(event, 'login-popup')">Login</button>
+			<button class="tablinks create-btn-tab" onclick="tab_login(event, 'create-popup')">Create account</button>
+		</div>
+
+		<div id="login-popup" class="tabcontent">
+			<form action="#">
+				<div class="inp-wr">
+					<span>Email</span>
+					<input type="email" placeholder="Enter your E-mail address">
+				</div>
+				<div class="inp-wr">
+					<span>Password</span>
+					<input type="password" placeholder="Enter your password">
+				</div>
+				<div class="inp-wr remember">
+					<label>Remember me
+						<input type="checkbox">
+						<span class="checkmark"></span>
+					</label>
+				</div>
+				<a href="javascript:;" class="cant_login">Can’t log in?</a>
+				<div class="inp-wr btn">
+					<button class="login">Login</button>
+				</div>
+			</form>
+			<p class="informer">First time here? Create an account</p>
+		</div>
+		<!-- add class "invited" to "tabcontent" bellow if user was invited -->
+		<div id="create-popup" class="tabcontent invited">
+			<div class="inviter">
+				<img src="img/Bitmap.png" alt="photo">
+				<p>
+					Johnathan Lassels invited you to their team and will control
+					access and pay expences of the account you about to create
+				</p>
+			</div>
+			<form action="#">
+				<div class="inp-wr">
+					<span>Name</span>
+					<input type="text" placeholder="Enter your name">
+				</div>
+				<div class="inp-wr">
+					<span>Company</span>
+					<input type="text" placeholder="Enter your company">
+				</div>
+				<div class="inp-wr">
+					<span>Email</span>
+					<input type="email" placeholder="Enter your E-mail address">
+				</div>
+				<div class="inp-wr">
+					<span>Password</span>
+					<input type="password" placeholder="Enter your password">
+				</div>
+				<div class="inp-wr remember">
+					<label>I agree with Terms
+						<input type="checkbox">
+						<span class="checkmark"></span>
+					</label>
+				</div>
+				<div class="inp-wr btn">
+					<button class="login">CREATE ACCOUNT</button>
+				</div>
+			</form>
+			<p class="informer">Have an account? Login</p>
+		</div>
+
+		<div id="reset">
+			<a class="close-btn" onclick="$.fancybox.close();" href="javascript:;">
+				<img src="img/close.svg" alt="">
+			</a>
+			<a href="javascript:;" class="back">
+				<span>Back</span>
+			</a>
+			<div class="title">
+				Reset password
+			</div>
+			<form action="#">
+				<div class="inp-wr">
+					<input type="email" placeholder="E-mail">
+				</div>
+				<div class="inp-wr btn">
+					<button class="reset">Reset</button>
+				</div>
+			</form>
+			<p class="informer">
+				If you forgot your email, please, contact
+				<br />
+				<a href="#">support@neurodatalab.dev</a>
+			</p>		
+		</div>
+	</div>
+	<!-- Resources -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+	<script src="js/home.js"></script>
+</body>
+</html>
