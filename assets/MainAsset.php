@@ -17,16 +17,17 @@ class MainAsset extends AssetBundle
         'css/home-media.css',
     ];
     public $js = [
-        'https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/3.0.5/vendors/scrolloverflow.min.js',
         'https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/3.0.5/fullpage.extensions.min.js',
+//        'https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/3.0.5/vendors/scrolloverflow.min.js',
+
         'https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js',
-        'js/jquery.scrollify.js',
+//        'js/jquery.scrollify.js',
         'js/home.js',
         'js/ajax.js'
 
     ];
     public $depends = [
-        'yii\web\YiiAsset',
+//        'yii\web\YiiAsset',
     ];
 }
 ?>

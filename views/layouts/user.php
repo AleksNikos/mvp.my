@@ -27,6 +27,7 @@ $(".add-user-form [type=mail]").keyup(function() {
       return false;
    }else{
        $('.add-user-form button').prop("disabled",false);
+       $('.add-user-form button').removeClass("inactive");
    }
 });
 
@@ -98,7 +99,18 @@ $controllerID = Yii::$app->controller->id;
         ?>
     </div>
 </div>
+<style>
+    form .inp-wr span{
+        padding: 5px 0 0 10px;
+        letter-spacing: 0.5px;
+        font-size: 10px;
+        color: #6673b4;
+    }
+    form .inp-wr.error span {
+        color: #ff495f!important;
+    }
 
+</style>
 <div id="<?=$this->params['pageID']?>" class="<?=$this->params['pageID']?>">
     <div class="wrapper">
         <div class="row">
@@ -449,11 +461,10 @@ myAjaxWidget::begin([
     "afterMethod" => "setWarnings('.add-user-form')"
 ]);
 ?>
+
     <form class="add-user-form">
         <div class="inp-wr">
-            <div class="info">
-                Teammate email
-            </div>
+           <span>Teammate email</span>
             <input type="mail" name="AddUserByEmail[email]" placeholder="Enter e-mail for new user">
         </div>
         <div class="text">
@@ -482,10 +493,10 @@ myAjaxWidget::begin([
                 <span class="checkmark"></span>
             </label>
         </div>
-        <div class="inp-wr" style="border: none; margin-bottom: 0">
-            <input type="mail" name="AddUserByEmail[Er]"  disabled>
-        </div>
-        <button disabled="true" class="add-user">
+<!--        <div class="inp-wr" style="border: none; margin-bottom: 0">-->
+<!--            <input type="mail" name="AddUserByEmail[Er]"  disabled>-->
+<!--        </div>-->
+        <button disabled="true" class="add-user inactive">
             add user
         </button>
     </form>
@@ -509,7 +520,7 @@ myAjaxWidget::begin([
     <div class="title">
         Information for you
     </div>
-    <a class="close-btn" onclick="$.fancybox.close()" href="javascript:$.fancybox.close();">
+    <a class="close-btn" onclick="$.fancybox.close()" href="javascript:;">
         <img src="/img/close.svg" alt="">
     </a>
 

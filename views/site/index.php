@@ -58,7 +58,9 @@ $this->title = 'My Yii Application';
         }else if($role['ROLE_AGENT']){
             echo "<a href='/agent/'>Dashboard</a>";
         }else{
-            echo "<a href=\"/login\">Dashboard</a>";
+            echo "<a data-fancybox=\"\" data-src=\"#login\" href=\"javascript:;\" class=\"d-none\">
+                        Dashboard
+                    </a>";
         }
         ?>
     </div>
@@ -140,7 +142,7 @@ $this->title = 'My Yii Application';
                     </ul>
                     <li>
                         <div class="num">1</div>
-                        <div class="title">Create account</div>
+                        <a data-fancybox data-src="#login" href="javascript:;" class="title sign_up-btn">Create account</a>
                     </li>
                     <li>
                         <div class="num">2</div>

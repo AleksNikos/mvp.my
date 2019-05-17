@@ -74,16 +74,16 @@ $this->title = 'Documentation';
 <!--        <h2>Usage</h2>-->
 <!--        <p>-->
 <!--            Before use, don’t forget to add api-service/python and api-service/python/pyproto to PYTHONPATH environment variable.-->
-            Show setup for:
-            <input name="setup_for" type="radio" value="ubu" id="ubuntu" checked>
-            <label for="ubuntu">
-                Ubuntu: 16 <span class="round_gradient">18</span>
-            </label>
-            +
-            <input name="setup_for" type="radio" value="pyt" id="python">
-            <label for="python">
-                Python: 2.7 <span class="round_gradient">3.7</span>
-            </label>
+<!--            Show setup for:-->
+<!--            <input name="setup_for" type="radio" value="ubu" id="ubuntu" checked>-->
+<!--            <label for="ubuntu">-->
+<!--                Ubuntu: 16 <span class="round_gradient">18</span>-->
+<!--            </label>-->
+<!--            -->
+<!--            <input name="setup_for" type="radio" value="pyt" id="python">-->
+<!--            <label for="python">-->
+<!--                Python: 2.7 <span class="round_gradient">3.7</span>-->
+<!--            </label>-->
 <!--            First, you will have to authorize in the service:-->
 <!--        </p>-->
 <!--        <pre><code><span class="pink">import</span> api.auth.Auth <span class="pink">as</span> Auth-->

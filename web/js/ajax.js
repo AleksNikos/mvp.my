@@ -10,7 +10,7 @@ function ajaxSuccess(){
         $("#success .informer").html(ajaxResponse.success);
         setTimeout(function () {
             $.fancybox.close();
-        },5000);
+        },5000000);
 
     }else {
         console.log("none");
@@ -45,13 +45,25 @@ function setWarnings(selector){
 
                     // var type = this.getAttribute("type");
                     // if(type!="checkbox"){
+
                         /*Для обычных input*/
                         var span = document.createElement("span");
-                        span.classList="incorrect";
+                        // span.<div class="info">!</div>
                         span.innerHTML = message;
                         var incorrect_html = "<span class=\"incorrect\" style=\"    font-size: 12px;color: #d36363;padding: 0 0 10px 10px;\">"+message+"</span>";
                         // this.parentNode.append(span);
-                        this.parentNode.append(span);
+                        // this.parentNode.append(span);
+                        this.parentNode.classList.add("error");
+                        var div = document.createElement("div");
+                        div.classList = "info";
+                        div.html="!";
+                        this.parentNode.appendChild(div);
+                        span = $(this.parentNode).find("span");
+                        console.log($(this.parentNode).find("span"));
+                        span[0].innerHTML = message;
+                        // console.log($(this).find("span"));
+
+
                     // }else if(type=="checkbox"){
                     //     /*Для checkbox*/
                     //     var span = document.createElement("span");

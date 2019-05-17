@@ -224,7 +224,7 @@ class SiteController extends Controller
             if($model->load(Yii::$app->request->post())){
                 $model->addParametersInModel();
 //            $this->var_export($model);
-                if($model->save(false)){// восстановить
+                if($model->save()){// восстановить
 //                    $this->var_export($model);
                     /*Создаем дефолтового юзера*/
                     $default_user = new Register();

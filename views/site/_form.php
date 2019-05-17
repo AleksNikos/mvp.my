@@ -107,11 +107,14 @@ myAjaxWidget::end();
         <?=Html::activeInput("password", $register,"password", ["placeholder"=>"Enter your password"])?>
 
     </div>
-    <?=$registerForm->field($register, "verify_code",["options"=>[
-        "style"=>"margin-bottom:20px;"
-    ]])->widget(ReCaptcha2::className(),[   'siteKey'=>'6LcozJ4UAAAAAEY1Sh9IUGx8Kq1DBVqalpgTirm0'])->label(false)?>
-
+    <div>
+        <span></span>
+        <?=$registerForm->field($register, "verify_code",["options"=>[
+            "style"=>"margin-bottom:20px;"
+        ]])->widget(ReCaptcha2::className(),[   'siteKey'=>'6LcozJ4UAAAAAEY1Sh9IUGx8Kq1DBVqalpgTirm0'])->label(false)?>
+    </div>
     <div class="inp-wr remember">
+        <span></span>
         <label>I agree with <a href="terms.html">Terms</a>
             <?=Html::activeInput("checkbox", $register, "legal_term",['value'=>1,'checked'=>false])?>
             <span class="checkmark"></span>
