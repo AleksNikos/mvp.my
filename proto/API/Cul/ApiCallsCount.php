@@ -15,23 +15,17 @@ use Google\Protobuf\Internal\GPBWrapperUtils;
 class ApiCallsCount extends \Google\Protobuf\Internal\Message
 {
     /**
-     *Общее количество вызовов
+     *общее число вызовов
      *
-     * Generated from protobuf field <code>uint64 total = 1;</code>
+     * Generated from protobuf field <code>.cul.CallsEntry total = 1;</code>
      */
-    private $total = 0;
+    private $total = null;
     /**
-     *Количество успешных вызовов
+     *количество вызовов по сервисам.
      *
-     * Generated from protobuf field <code>uint64 success = 2;</code>
+     * Generated from protobuf field <code>map<string, .cul.CallsEntry> for_service = 2;</code>
      */
-    private $success = 0;
-    /**
-     *Количество вызовов с ошибкой
-     *
-     * Generated from protobuf field <code>uint64 errors = 3;</code>
-     */
-    private $errors = 0;
+    private $for_service;
 
     /**
      * Constructor.
@@ -39,12 +33,10 @@ class ApiCallsCount extends \Google\Protobuf\Internal\Message
      * @param array $data {
      *     Optional. Data for populating the Message object.
      *
-     *     @type int|string $total
-     *          Общее количество вызовов
-     *     @type int|string $success
-     *          Количество успешных вызовов
-     *     @type int|string $errors
-     *          Количество вызовов с ошибкой
+     *     @type \Cul\CallsEntry $total
+     *          общее число вызовов
+     *     @type array|\Google\Protobuf\Internal\MapField $for_service
+     *          количество вызовов по сервисам.
      * }
      */
     public function __construct($data = NULL) {
@@ -53,10 +45,10 @@ class ApiCallsCount extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     *Общее количество вызовов
+     *общее число вызовов
      *
-     * Generated from protobuf field <code>uint64 total = 1;</code>
-     * @return int|string
+     * Generated from protobuf field <code>.cul.CallsEntry total = 1;</code>
+     * @return \Cul\CallsEntry
      */
     public function getTotal()
     {
@@ -64,68 +56,42 @@ class ApiCallsCount extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     *Общее количество вызовов
+     *общее число вызовов
      *
-     * Generated from protobuf field <code>uint64 total = 1;</code>
-     * @param int|string $var
+     * Generated from protobuf field <code>.cul.CallsEntry total = 1;</code>
+     * @param \Cul\CallsEntry $var
      * @return $this
      */
     public function setTotal($var)
     {
-        GPBUtil::checkUint64($var);
+        GPBUtil::checkMessage($var, \Cul\CallsEntry::class);
         $this->total = $var;
 
         return $this;
     }
 
     /**
-     *Количество успешных вызовов
+     *количество вызовов по сервисам.
      *
-     * Generated from protobuf field <code>uint64 success = 2;</code>
-     * @return int|string
+     * Generated from protobuf field <code>map<string, .cul.CallsEntry> for_service = 2;</code>
+     * @return \Google\Protobuf\Internal\MapField
      */
-    public function getSuccess()
+    public function getForService()
     {
-        return $this->success;
+        return $this->for_service;
     }
 
     /**
-     *Количество успешных вызовов
+     *количество вызовов по сервисам.
      *
-     * Generated from protobuf field <code>uint64 success = 2;</code>
-     * @param int|string $var
+     * Generated from protobuf field <code>map<string, .cul.CallsEntry> for_service = 2;</code>
+     * @param array|\Google\Protobuf\Internal\MapField $var
      * @return $this
      */
-    public function setSuccess($var)
+    public function setForService($var)
     {
-        GPBUtil::checkUint64($var);
-        $this->success = $var;
-
-        return $this;
-    }
-
-    /**
-     *Количество вызовов с ошибкой
-     *
-     * Generated from protobuf field <code>uint64 errors = 3;</code>
-     * @return int|string
-     */
-    public function getErrors()
-    {
-        return $this->errors;
-    }
-
-    /**
-     *Количество вызовов с ошибкой
-     *
-     * Generated from protobuf field <code>uint64 errors = 3;</code>
-     * @param int|string $var
-     * @return $this
-     */
-    public function setErrors($var)
-    {
-        GPBUtil::checkUint64($var);
-        $this->errors = $var;
+        $arr = GPBUtil::checkMapField($var, \Google\Protobuf\Internal\GPBType::STRING, \Google\Protobuf\Internal\GPBType::MESSAGE, \Cul\CallsEntry::class);
+        $this->for_service = $arr;
 
         return $this;
     }

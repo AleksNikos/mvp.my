@@ -104,10 +104,11 @@ class Card extends \yii\db\ActiveRecord
                 $stripe = new myStripe(["moth" => $this->moth, "year" => $this->year, "cardNumber" => $this->card_number, "cvc" => $this->cvc]);
                 $stripe->createNewConnect();
                 if(!$stripe->save()){
-
                     return false; //на выходе обязательно обработать все ошибки.
                 }else{
-                    $this->success = "Card valid successfully added";
+                    Demo::stop(Yii::$app->user->identity);
+                    //отключить демо режим
+                    $this->success = "Card valid successfully added. Demo mode is off.";
                 }
 
             }else{

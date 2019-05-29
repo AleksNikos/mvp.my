@@ -4,6 +4,7 @@
 /* @var $content string */
 
 use app\assets\MainAsset;
+use app\assets\ScrollAsset;
 use app\widgets\Alert;
 use yii\helpers\Html;
 use yii\bootstrap\Nav;
@@ -11,6 +12,9 @@ use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
 MainAsset::register($this);
+if(Yii::$app->controller->action->id == "index"){
+    ScrollAsset::register($this);
+}
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>

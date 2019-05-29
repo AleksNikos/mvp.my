@@ -16,7 +16,6 @@ use yii\helpers\Url;
 <?php
 $link = $_SERVER['SERVER_NAME']."/set-new-password?code=".$user->reset_password_hash;
 ?>
-<?//=$link;?>
- <a href="<?=$link?>" target="_blank">Восстановите свой пароль по следующей ссылке</a>
+<?=Html::a("Восстановите свой пароль по следующей ссылке",Url::toRoute(["/set-new-password?code=".$user->reset_password_hash],true))?>
 </body>
 

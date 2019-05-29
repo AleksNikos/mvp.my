@@ -51,6 +51,7 @@ class Cron extends Model
 
            $total = 0;
             $calls = $keysInfo->getCalls();
+            $this->var_export($calls[0]->getForService());
            /*-----Это место заменить на конкретную статистику по Fd и Er ------------------------*/
            foreach ($calls as $count){
                $total = $total+$count->getTotal();

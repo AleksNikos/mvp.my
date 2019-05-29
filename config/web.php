@@ -35,17 +35,17 @@ $config = [
             'useFileTransport' => true,
             'transport' => [
                 'class' => 'Swift_SmtpTransport',
-                'host' => 'host1759253.hostland.ru',  // e.g. smtp.mandrillapp.com or smtp.gmail.com
-                'username' => 'admin@host1759253.hostland.ru',
-                'password' => 'QXOUmfwl7q',
-                'port' => '465', // Port 25 is a very common port too
+                'host' => 'apiservice-beta.ru',  // e.g. smtp.mandrillapp.com or smtp.gmail.com
+                'username' => 'api@apiservice-beta.ru',
+                'password' => '8DmZ9iJfJP',
+                'port' => '25', // Port 25 is a very common port too
 
 
 //                'host' => 'smtp.mail.ru',  // e.g. smtp.mandrillapp.com or smtp.gmail.com
 //                'username' => 'vetal_9406@bk.ru',
 //                'password' => '254258256qqqaaazzz',
 //                'port' => '465', // Port 25 is a very common port too
-                'encryption' => 'ssl', // It is often used, check your provider or mail server specs
+//                'encryption' => 'ssl', // It is often used, check your provider or mail server specs
             ],
 
         ],

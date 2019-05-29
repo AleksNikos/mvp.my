@@ -81,5 +81,4 @@ class AuthServiceClient extends \Grpc\BaseStub {
         $metadata, $options);
     }
 
-
 }

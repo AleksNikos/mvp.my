@@ -61,6 +61,7 @@ class APIConnector extends Model
         @include_once Yii::getAlias("@app/proto/api/Cul/ApiKeys.php");
         @include_once Yii::getAlias("@app/proto/api/Cul/ServiceInfo.php");
         @include_once Yii::getAlias("@app/proto/api/Cul/CULApiStatisticsClient.php");
+        @include_once Yii::getAlias("@app/proto/api/Cul/CallsEntry.php");
 
 
         @include_once Yii::getAlias("@app/proto/api/GPBMetadata/AuthService.php");
@@ -175,7 +176,7 @@ class APIConnector extends Model
 
 
         //Ñîçäàåì ñâÿçü ìåæäó şçåğàìè â àïè è ñèñòåìíûìè.
-        if(!UserAPIKeys::findOne(["uid"=>$currentToken->uid])){
+        if(!UserAPIKeys::findOne(["uid"=>$currentToken->uid, "userID"=>$user->id])){
             $UA = new UserAPIKeys();
             $UA->userID = $user->id;
             $UA->uid = $currentToken->uid;

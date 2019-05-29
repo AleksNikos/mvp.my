@@ -8,7 +8,9 @@
 use himiklab\yii2\recaptcha\ReCaptcha2;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
+use yii\web\View;
 
+//$this->registerJsFile("js/home.js",["position"=>View::POS_END]);
 $this->title = 'Documentation';
 ?>
 <div class="content-docs">

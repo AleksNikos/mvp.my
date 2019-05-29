@@ -4,6 +4,7 @@ namespace app\models;
 
 use function count;
 use function file_exists;
+use function var_dump;
 use Yii;
 use ZipArchive;
 
@@ -73,6 +74,7 @@ class Keys extends \yii\db\ActiveRecord
         $user = User::find()->where(["id"=>Yii::$app->user->getId()])->one();
         $connector = new APIConnector(["typeClient"=>1]);
         $typeKeys = [];
+
         if($this->Fd==1 and $user->FdChecker==1){
             $typeKeys[] = 2;
         }else{

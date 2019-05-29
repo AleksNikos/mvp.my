@@ -63,7 +63,6 @@ use yii\helpers\Html;
     ActiveForm::end();
 myAjaxWidget::end();
 ?>
-<p class="informer">First time here? Create an account</p>
 </div>
 <!-- add class "invited" to "tabcontent" bellow if user was invited -->
 <div id="create-popup" class="tabcontent invited">
@@ -193,9 +192,6 @@ myAjaxWidget::end();
     <div class="title">
         Information for you
     </div>
-    <a class="close-btn" onclick="$.fancybox.close()" href="javascript:$.fancybox.close();">
-        <img src="img/close.svg" alt="">
-    </a>
 
     <p class="informer" style="    margin-top: 20px;">
 

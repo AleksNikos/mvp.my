@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\web\IdentityInterface;
 
 /**
  * This is the model class for table "demo".
@@ -65,8 +66,8 @@ class Demo extends \yii\db\ActiveRecord
     /*
      * Останавливает демо режим
      * */
-    public static function stop(User $user){
-        $demo = static::findOne(["userID"=>$user->id]);
+    public static function stop(IdentityInterface $user){
+        $demo = static::findOne(["userID"=>$user->getId()]);
         $demo->is_activated = 0;
        return $demo->save();
     }

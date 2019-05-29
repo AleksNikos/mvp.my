@@ -7,7 +7,10 @@
  */
 use app\assets\UserAsset;
 use app\models\AddUserByEmail;
+use app\models\StatisticsDays;
+use app\models\TotalStatistics;
 use app\widgets\myAjaxWidget;
+use yii\web\View;
 use yii\widgets\ActiveForm;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
@@ -21,15 +24,72 @@ $scriptAddUser=<<<JS
 $(".add-user-form [type=mail]").keyup(function() {
    var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
    var address = $(this);
-   // console.log($(this));
-   if(reg.test($(this).val()) == false) {
+   if(reg.test($(this).val()) == false || checkerr(".add-user-form") == false) {
       console.log('Введите корректный e-mail');
+      $('.add-user-form button').prop("disabled",true);
+       $('.add-user-form button').addClass("inactive");
+       
+       
       return false;
    }else{
        $('.add-user-form button').prop("disabled",false);
        $('.add-user-form button').removeClass("inactive");
    }
 });
+function checkerr (form){
+    var checker = false;
+    console.log(form);
+    $(form+' input[type=checkbox]').each(function(){
+       if ( $(this).is(':checked') ){
+          checker = true;
+       }
+    });
+    return checker;
+}
+
+$(".add-key-form [type=text]").keyup(function() {
+   var reg = /^([a-z0-9A-Z]{1,})$/;
+   var address = $(this);
+   // console.log($(this));
+   if(reg.test($(this).val()) == false || checkerr(".add-key-form") == false) {
+      console.log('Введите имя');
+      $('.add-key-form button').prop("disabled",true);
+       $('.add-key-form button').addClass("inactive");
+      return false;
+   }else{
+       $('.add-key-form button').prop("disabled",false);
+       $('.add-key-form button').removeClass("inactive");
+   }
+});
+
+$(".add-key-form input[type=checkbox], .add-user-form input[type=checkbox]").change(function() {
+    form = this.parentNode.form;
+    if($(form)[0].className=="add-user-form"){
+        textinput = $(form)[0][0];
+    }else{
+        textinput = $(form)[0][1];
+    }
+    
+    type = textinput.getAttribute("type");
+    if(type == "mail"){
+          reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+    }else if(type == "text"){
+         reg = /^([a-z0-9]{1,})$/;
+    }
+    selector = "."+form.classList[0];
+    if(reg.test($(textinput).val()) == false || checkerr(selector) == false) {
+      console.log('Введите корректный e-mail');
+      $(selector+' button').prop("disabled",true);
+       $(selector+ ' button').addClass("inactive");
+       
+       
+      return false;
+   }else{
+       $(selector+' button').prop("disabled",false);
+       $(selector+' button').removeClass("inactive");
+   }
+});
+
 
 //$("button.add-user").click(function() {
 //   event.preventDefault();
@@ -66,6 +126,35 @@ $(".add-user-form [type=mail]").keyup(function() {
 //   
 JS;
 $this->registerJS($scriptAddUser);
+
+//script Graph
+$stat = new StatisticsDays();
+$statDays = $stat->getPeriodStatistics();
+$time = $stat->graph->time;
+$fdTime = $stat->graph->fd;
+$erTime = $stat->graph->er;
+$bad = $stat->percentDay["bad"];
+
+$better = $stat->percentDay["better"];
+
+$fd_circle = $stat->percentCircle->fd;
+$er_circle = $stat->percentCircle->er;
+
+$fotterGraph = <<<JS
+    time = $time;
+    er = $erTime;
+    fd = $fdTime;
+    mini_time = $time;
+    mini_er = $erTime;
+    mini_fd = $fdTime;
+    
+    badDay = $bad;
+    betterDay = $better;
+    
+    fd_circle = $fd_circle;
+    er_circle = $er_circle;
+JS;
+$this->registerJS($fotterGraph,View::POS_BEGIN);
 
 $role = Yii::$app->authManager->getRolesByUser(Yii::$app->user->getId());
 $controllerID = Yii::$app->controller->id;
@@ -117,7 +206,7 @@ $controllerID = Yii::$app->controller->id;
             <div class="block-wrapper svg">
                 <div class="payment-period">
                     <div class="period">
-                        Mar 15 - Apr 15
+                        <?=$statDays["moths"]["start"]["moth"].' '.$statDays["moths"]["start"]["day"].' - '.$statDays["moths"]["finish"]["moth"].' '.$statDays["moths"]["finish"]["day"]?>
                     </div>
                     <div class="period_after">
                         current payment period
@@ -129,6 +218,10 @@ $controllerID = Yii::$app->controller->id;
                                     <stop stop-color="#6673B4" offset="0%"></stop>
                                     <stop stop-color="#9EAEFF" offset="100%"></stop>
                                 </linearGradient>
+                                <linearGradient x1="100%" y1="0%" x2="0%" y2="100%" id="pink">
+                                    <stop stop-color="#feb4b4" offset="0%"></stop>
+                                    <stop stop-color="#ff729a" offset="100%"></stop>
+                                </linearGradient>
                             </defs>
                             <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                                 <g id="ic-menu-m" transform="translate(-25.000000, -15.000000)">
@@ -136,6 +229,11 @@ $controllerID = Yii::$app->controller->id;
                                         <rect id="Rectangle" fill="#D0D8FF" x="0" y="13" width="15" height="2"></rect>
                                         <rect id="Rectangle" fill="url(#linearGradient-1)" x="0" y="6.5" width="15" height="2"></rect>
                                         <rect id="Rectangle" fill="#D0D8FF" x="0" y="0" width="15" height="2"></rect>
+                                    </g>
+                                    <g id="Group-4" transform="translate(25.000000, 15.000000)">
+                                        <rect id="Rectangle" fill="url(#pink)" x="0" y="13" width="15" height="2"></rect>
+                                        <rect id="Rectangle" fill="url(#pink)" x="0" y="6.5" width="15" height="2"></rect>
+                                        <rect id="Rectangle" fill="url(#pink)" x="0" y="0" width="15" height="2"></rect>
                                     </g>
                                 </g>
                             </g>
@@ -321,7 +419,7 @@ $controllerID = Yii::$app->controller->id;
                 <div class="block-wrapper svg">
                     <div class="payment-period">
                         <div class="period">
-                            Mar 15 - Apr 15
+                            <?=$statDays["moths"]["start"]["moth"].' '.$statDays["moths"]["start"]["day"].' - '.$statDays["moths"]["finish"]["moth"].' '.$statDays["moths"]["finish"]["day"]?>
                         </div>
                         <div class="period_after">
                             current payment period
@@ -337,22 +435,37 @@ $controllerID = Yii::$app->controller->id;
                 <div class="block-wrapper">
                     <div class="round-chart">
                         <div class="chart-container">
-                            <div class="val">1847</div>
+                            <div class="val"><?=$statDays["stats"]["total"];//см. @var StatisticDays->getPeriodStatistics(); ?></div>
                             <div class="desc">times used</div>
                             <canvas id="doughnut-chartcanvas-1"></canvas>
                         </div>
                         <div class="review">
                             <div class="fd">
                                 <div class="val">
-                                    1347
+                                    <?=$statDays["stats"]["fd"]; //см. @var StatisticDays->getPeriodStatistics();  ?>
                                 </div>
-                                <div class="percent green">
-                                    +15%
-                                    <span>
-											<svg width="6" height="10" viewBox="0 0 6 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-											<path fill-rule="evenodd" clip-rule="evenodd" d="M5.93782 2.79063C5.97927 2.75104 6 2.69167 6 2.6125C6 2.53333 5.97927 2.47396 5.93782 2.43437C4.13471 0.870825 3.2228 0.0791664 3.20207 0.0593748C3.16062 0.0197916 3.09845 0 3.01554 0C2.93264 0 2.87047 0.0197916 2.82902 0.0593748L0.0932647 2.43437C-0.0310882 2.55313 -0.0310882 2.67187 0.0932647 2.79063C0.217618 2.90938 0.341969 2.90938 0.466322 2.79063L2.76684 0.801562V9.2625C2.76684 9.42083 2.84974 9.5 3.01554 9.5C3.18135 9.5 3.26425 9.42083 3.26425 9.2625V0.801562L5.56477 2.79063C5.68912 2.90938 5.81347 2.90938 5.93782 2.79063Z" fill="#b8e986"/>
+                                <div class="percent <?=$statDays["percent"]["fd"]>0?"green":"red" ?>">
+                                    <?= $statDays["percent"]["fd"]>0?"+".$statDays["percent"]["fd"]."%":$statDays["percent"]["fd"]."%" ?>
+                                    <?php
+                                    if($statDays["percent"]["fd"]>0){
+
+                                        echo "
+                                          <span>
+											<svg width=\"6\" height=\"10\" viewBox=\"0 0 6 10\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">
+											<path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M5.93782 2.79063C5.97927 2.75104 6 2.69167 6 2.6125C6 2.53333 5.97927 2.47396 5.93782 2.43437C4.13471 0.870825 3.2228 0.0791664 3.20207 0.0593748C3.16062 0.0197916 3.09845 0 3.01554 0C2.93264 0 2.87047 0.0197916 2.82902 0.0593748L0.0932647 2.43437C-0.0310882 2.55313 -0.0310882 2.67187 0.0932647 2.79063C0.217618 2.90938 0.341969 2.90938 0.466322 2.79063L2.76684 0.801562V9.2625C2.76684 9.42083 2.84974 9.5 3.01554 9.5C3.18135 9.5 3.26425 9.42083 3.26425 9.2625V0.801562L5.56477 2.79063C5.68912 2.90938 5.81347 2.90938 5.93782 2.79063Z\" fill=\"#b8e986\"/>
 											</svg>
 										</span>
+                                        ";
+                                    }else{
+                                        echo "
+                                        <span>
+											<svg width=\"6\" height=\"10\" viewBox=\"0 0 6 10\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">
+											<path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M5.93782 6.70937C5.97927 6.74896 6 6.80833 6 6.8875C6 6.96667 5.97927 7.02604 5.93782 7.06563C4.13471 8.62918 3.2228 9.42083 3.20207 9.44063C3.16062 9.48021 3.09845 9.5 3.01554 9.5C2.93264 9.5 2.87047 9.48021 2.82902 9.44063L0.0932647 7.06563C-0.0310882 6.94687 -0.0310882 6.82813 0.0932647 6.70937C0.217618 6.59062 0.341969 6.59062 0.466322 6.70937L2.76684 8.69844V0.2375C2.76684 0.0791659 2.84974 0 3.01554 0C3.18135 0 3.26425 0.0791659 3.26425 0.2375V8.69844L5.56477 6.70937C5.68912 6.59062 5.81347 6.59062 5.93782 6.70937Z\" fill=\"#ff729a\"/>
+											</svg>
+										</span>
+                                        ";
+                                    }
+                                    ?>
                                 </div>
                                 <div class="title">
                                     Face detector
@@ -360,15 +473,31 @@ $controllerID = Yii::$app->controller->id;
                             </div>
                             <div class="er">
                                 <div class="val">
-                                    500
+                                    <?= $statDays["stats"]["er"];//см. @var StatisticDays->getPeriodStatistics(); ?>
                                 </div>
-                                <div class="percent red">
-                                    -4%
-                                    <span>
-											<svg width="6" height="10" viewBox="0 0 6 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-											<path fill-rule="evenodd" clip-rule="evenodd" d="M5.93782 6.70937C5.97927 6.74896 6 6.80833 6 6.8875C6 6.96667 5.97927 7.02604 5.93782 7.06563C4.13471 8.62918 3.2228 9.42083 3.20207 9.44063C3.16062 9.48021 3.09845 9.5 3.01554 9.5C2.93264 9.5 2.87047 9.48021 2.82902 9.44063L0.0932647 7.06563C-0.0310882 6.94687 -0.0310882 6.82813 0.0932647 6.70937C0.217618 6.59062 0.341969 6.59062 0.466322 6.70937L2.76684 8.69844V0.2375C2.76684 0.0791659 2.84974 0 3.01554 0C3.18135 0 3.26425 0.0791659 3.26425 0.2375V8.69844L5.56477 6.70937C5.68912 6.59062 5.81347 6.59062 5.93782 6.70937Z" fill="#ff729a"/>
+                                <div class="percent <?=$statDays["percent"]["er"]>0?"green":"red" ?>">
+                                    <?= $statDays["percent"]["er"]>0?"+".$statDays["percent"]["er"]."%":$statDays["percent"]["er"]."%" ?>
+                                    <?php
+                                    if($statDays["percent"]["er"]>0){
+
+                                        echo "
+                                          <span>
+											<svg width=\"6\" height=\"10\" viewBox=\"0 0 6 10\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">
+											<path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M5.93782 2.79063C5.97927 2.75104 6 2.69167 6 2.6125C6 2.53333 5.97927 2.47396 5.93782 2.43437C4.13471 0.870825 3.2228 0.0791664 3.20207 0.0593748C3.16062 0.0197916 3.09845 0 3.01554 0C2.93264 0 2.87047 0.0197916 2.82902 0.0593748L0.0932647 2.43437C-0.0310882 2.55313 -0.0310882 2.67187 0.0932647 2.79063C0.217618 2.90938 0.341969 2.90938 0.466322 2.79063L2.76684 0.801562V9.2625C2.76684 9.42083 2.84974 9.5 3.01554 9.5C3.18135 9.5 3.26425 9.42083 3.26425 9.2625V0.801562L5.56477 2.79063C5.68912 2.90938 5.81347 2.90938 5.93782 2.79063Z\" fill=\"#b8e986\"/>
 											</svg>
 										</span>
+                                        ";
+                                    }else{
+                                        echo "
+                                        <span>
+											<svg width=\"6\" height=\"10\" viewBox=\"0 0 6 10\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">
+											<path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M5.93782 6.70937C5.97927 6.74896 6 6.80833 6 6.8875C6 6.96667 5.97927 7.02604 5.93782 7.06563C4.13471 8.62918 3.2228 9.42083 3.20207 9.44063C3.16062 9.48021 3.09845 9.5 3.01554 9.5C2.93264 9.5 2.87047 9.48021 2.82902 9.44063L0.0932647 7.06563C-0.0310882 6.94687 -0.0310882 6.82813 0.0932647 6.70937C0.217618 6.59062 0.341969 6.59062 0.466322 6.70937L2.76684 8.69844V0.2375C2.76684 0.0791659 2.84974 0 3.01554 0C3.18135 0 3.26425 0.0791659 3.26425 0.2375V8.69844L5.56477 6.70937C5.68912 6.59062 5.81347 6.59062 5.93782 6.70937Z\" fill=\"#ff729a\"/>
+											</svg>
+										</span>
+                                        ";
+                                    }
+
+                                    ?>
                                 </div>
                                 <div class="title">
                                     Emotion recognition
@@ -411,6 +540,8 @@ $controllerID = Yii::$app->controller->id;
         </div>
     </div>
 </div>
+
+
 
 <section id="chart-full" class="chart-full">
     <div class="wrapper">
@@ -520,9 +651,6 @@ myAjaxWidget::begin([
     <div class="title">
         Information for you
     </div>
-    <a class="close-btn" onclick="$.fancybox.close()" href="javascript:;">
-        <img src="/img/close.svg" alt="">
-    </a>
 
     <p class="informer" style="    margin-top: 20px;">
 
@@ -586,7 +714,7 @@ myAjaxWidget::begin([
                 <span class="checkmark"></span>
             </label>
         </div>
-        <button class="create">
+        <button class="create inactive" disabled="true">
             create
         </button>
 <!--    </form>-->

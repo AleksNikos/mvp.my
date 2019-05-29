@@ -2,13 +2,15 @@
 
 /* @var $this yii\web\View */
 
+use app\assets\ScrollAsset;
 use himiklab\yii2\recaptcha\ReCaptcha2;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
+use yii\web\View;
 
 $this->title = 'My Yii Application';
 
-
+//$this->registerJsFile("js/scroll.js",[ ["depends"=>'yii\assets\MainAsset']]);
 ?>
 
 <div class="topbar-wrap">
@@ -65,6 +67,7 @@ $this->title = 'My Yii Application';
         ?>
     </div>
 </div>
+
 <a href="javascript:void(0);" class="menu icon">
     <svg width="15px" height="15px" viewBox="0 0 15 15" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
         <defs>
@@ -91,8 +94,8 @@ $this->title = 'My Yii Application';
             <div class="row">
                 <div class="home-chart">
                     <h1 class="title">
-                        API to emotions
-                        and behavior
+                        API to emotions <br>
+                        and behavior<br>
                         in a few lines of code
                     </h1>
 
@@ -118,6 +121,20 @@ $this->title = 'My Yii Application';
                     <div class="learn-more">
                         <a href="#home-second">
                             <span>Learn more</span>
+<!--                            --><?//=xml version="1.0" encoding="UTF-8"?>
+                            <svg width="12px" height="20px" viewBox="0 0 12 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                <defs>
+                                    <linearGradient x1="0%" y1="100%" x2="100%" y2="0%" id="linearGradient-1">
+                                        <stop stop-color="#6673B4" offset="0%"></stop>
+                                        <stop stop-color="#9EAEFF" offset="100%"></stop>
+                                    </linearGradient>
+                                </defs>
+                                <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <g id="ic-arr-d" transform="translate(1.000000, 0.000000)" fill="url(#linearGradient-1)">
+                                        <path d="M4.47671785,19.7601199 C4.62068966,19.916042 4.81449786,20 5.00276869,20 C5.19103952,20 5.38484772,19.922039 5.52881953,19.7601199 L10.2798893,14.6146927 C10.5733702,14.2968516 10.5733702,13.7871064 10.2798893,13.4692654 C9.98640826,13.1514243 9.51573119,13.1514243 9.22225019,13.4692654 L5.75031462,17.2353823 L5.75031462,0.809595202 C5.75031462,0.35982009 5.41807199,0 5.00276869,0 C4.58746539,0 4.25522275,0.35982009 4.25522275,0.809595202 L4.25522275,17.2353823 L0.777749811,13.4692654 C0.484268814,13.1514243 0.0135917443,13.1514243 -0.279889252,13.4692654 C-0.573370249,13.7871064 -0.573370249,14.2968516 -0.279889252,14.6146927 L4.47671785,19.7601199 Z" id="Path"></path>
+                                    </g>
+                                </g>
+                            </svg>
                         </a>
                     </div>
                 </div>
@@ -248,10 +265,10 @@ $this->title = 'My Yii Application';
                         </li>
                     </ul>
                     <h3 class="title">
-                        Monthly postpayments.
+                        Monthly postpayments.<br />
                         Free trial key for 500 images. <br />
                         <span>
-							Detailed statistics.
+							Detailed statistics.<br />
 							Manage team from single account.
 						</span>
                     </h3>
