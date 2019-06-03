@@ -25,7 +25,10 @@ if(Yii::$app->controller->action->id == "index"){
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?php $this->registerCsrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
-    <?php $this->head() ?>
+    <?php $this->head() ;
+    echo Html :: csrfMetaTags();
+    ?>
+
 </head>
 <body>
 <?php $this->beginBody() ?>

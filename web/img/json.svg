@@ -1,1 +1,21 @@
-<svg width="30" height="40" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path d="M4 0h18l8 8v28a4 4 0 0 1-4 4H4a4 4 0 0 1-4-4V4a4 4 0 0 1 4-4z" fill="#A8B6FC"/><path fill-opacity=".7" fill="#1E2549" d="M22 0v8h8z"/><text font-family="TitilliumWeb-Light, Titillium Web Light" font-size="12" letter-spacing=".429" fill="#1E2549"><tspan x="2.295" y="32">.json</tspan></text></g></svg>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="30px" height="40px" viewBox="0 0 30 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: sketchtool 52.6 (67491) - http://www.bohemiancoding.com/sketch -->
+    <title>8F21A259-4A48-49D1-B266-364320FB59B0</title>
+    <desc>Created with sketchtool.</desc>
+    <g id="Home" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="demo-fd-res" transform="translate(-910.000000, -802.000000)">
+            <g id="modal" transform="translate(290.000000, 120.000000)">
+                <g id="json" transform="translate(30.000000, 662.000000)">
+                    <g id="ic-file" transform="translate(590.000000, 20.000000)">
+                        <path d="M4,0 L22,0 L30,8 L30,36 C30,38.209139 28.209139,40 26,40 L4,40 C1.790861,40 2.705415e-16,38.209139 0,36 L0,4 C-2.705415e-16,1.790861 1.790861,4.05812251e-16 4,0 Z" id="Rectangle" fill="#A8B6FC"></path>
+                        <polygon id="Path-6" fill-opacity="0.7" fill="#1E2549" points="22 0 22 8 30 8"></polygon>
+                        <text id=".json" font-family="TitilliumWeb-Light, Titillium Web Light" font-size="12" font-weight="normal" line-spacing="20" letter-spacing="0.4285714" fill="#1E2549">
+                            <tspan x="2.2945715" y="32">.json</tspan>
+                        </text>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

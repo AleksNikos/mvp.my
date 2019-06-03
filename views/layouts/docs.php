@@ -31,9 +31,9 @@ MainAsset::register($this);
     <div class="wrapper">
         <div class="row">
             <div class="topbar">
-                <div class="logo">
+                <a href="/" class="logo">
                     <img src="img/LOGO@4x.svg" alt="logo">
-                </div>
+                </a>
                 <nav>
                     <ul>
                         <li class="docs active">
@@ -74,7 +74,7 @@ MainAsset::register($this);
             }else if($role['ROLE_AGENT']){
                 echo "<a href='/agent/'>Dashboard</a>";
             }else{
-                echo "<a href=\"/login\">Dashboard</a>";
+                echo "<a data-fancybox data-src=\"#login\" href=\"javascript:;\" class=\"login-btn\">Login</a>";
             }
         ?>
     </div>
@@ -107,13 +107,6 @@ MainAsset::register($this);
                     Documentation
                 </div>
                 <ul>
-<!--                    <li class="api_client"><a href="#api_client"><span>API client</span></a></li>-->
-<!--                    <li><a href="#installation">Installation</a></li>-->
-<!--                    <li><a href="#usage">Usage</a></li>-->
-<!--                    <li><a href="#classes">Classes</a></li>-->
-<!--                    <li class="fd"><a href="#fd"><span>Face detector module</span></a></li>-->
-<!--                    <li class="er"><a href="#er"><span>Emotion recognition module</span></a></li>-->
-
                     <li class="api_client active">
                         <a href="#api_client"><span>API <br />client</span></a>
                         <ul class="inset">

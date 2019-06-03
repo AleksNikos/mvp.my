@@ -157,31 +157,6 @@ ssl_auth = Auth.SslCredential(osp.join(cert_home, <span class="violet">'client.k
                               osp.join(cert_home, <span class="violet">'ca.crt'</span>))
 
 key_auth = Auth.AuthCredential(<span class="violet">'emotionsdemo.com:50051'</span>, osp.join(cert_home, <span class="violet">'root.json'</span>), ssl_auth)</code></pre>
-<!--        <p>-->
-<!--            After successful authorization, you can use the modules supported by your key. For detailed information about the modules see Modules Info. Also, you can see an example on our GitHub page api-service/python/demo.py-->
-<!--        </p>-->
-<!--    </div>-->
-<!--    <div id="classes" class="link">-->
-<!--        <h2>Classes</h2>-->
-<!--        <h3>Image</h3>-->
-<!--        <p>-->
-<!--            To process an image, you will first have to prepare it.-->
-<!--        </p>-->
-<!--        <pre><code>from api.utils.image import Image</code></pre>-->
-<!--        <p>-->
-<!--            You can initialize Image instance from the path-->
-<!--        </p>-->
-<!--        <pre><code>image = Image.from_file('some_image.jpg')</code></pre>-->
-<!--        <p>-->
-<!--            Or you can initialize Image instance from a cv2-like image-->
-<!--        </p>-->
-<!--        <pre><code>image = Image.from_bgr(bgr_image)</code></pre>-->
-<!--        <p>-->
-<!--            After initialization, you can process this image via the module which supports image processing, for example: <a href="#fd">Face Detector</a>-->
-<!--        </p>-->
-<!--        <p>-->
-<!--            See example on the GitHub page.-->
-<!--        </p>-->
             <p>
                 After successful authorization, you can use the modules supported by your key. For detailed information about the modules see Modules Info. Also, you can see an example on our GitHub page api-service/python/demo.py
             </p>

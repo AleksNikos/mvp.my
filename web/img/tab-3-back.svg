@@ -1,1 +1,11 @@
-<svg width="55" height="55" xmlns="http://www.w3.org/2000/svg"><path d="M0 0l8.896 40.03a8 8 0 0 0 6.074 6.074L55 55V0H0z" fill="#232E59" fill-rule="evenodd"/></svg>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="55px" height="55px" viewBox="0 0 55 55" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: sketchtool 52.6 (67491) - http://www.bohemiancoding.com/sketch -->
+    <title>34A48855-A60B-46D8-9438-0CFFC2221249</title>
+    <desc>Created with sketchtool.</desc>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="ic-menu-m" fill="#232E59">
+            <path d="M5.68434189e-14,-9.16600129e-13 L8.89562676,40.0303204 C9.56944328,43.0624947 11.9375053,45.4305567 14.9696796,46.1043732 L55,55 L55,-9.16600129e-13 L5.68434189e-14,-9.16600129e-13 Z" id="tab3-back"></path>
+        </g>
+    </g>
+</svg>

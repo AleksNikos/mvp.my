@@ -22,6 +22,7 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use yii\widgets\ActiveForm;
 
 class SiteController extends Controller
 {
@@ -71,33 +72,29 @@ class SiteController extends Controller
         ];
     }
 
+    /*
+     * Обрабатывает действие сброса паролей.
+     *
+     * */
     public function actionReset(){
-       if(Yii::$app->request->isPost){
+       if(Yii::$app->request->isAjax){
            Yii::$app->response->format = Response::FORMAT_JSON;
            $model = new ResetPassword();
-           if($model->load(Yii::$app->request->post())){
-
+           if($model->load(Yii::$app->request->post()) and $model->validate()){
                if($user = User::find()->where(["email"=>trim($model->email), 'IS_DEFAULT'=>0])->one()){
                    $user->reset_password_hash = Yii::$app->security->generateRandomString();
                    $user->save();
                    $model->sendMessage($user);
-                   $response['success']="A message with a link to reset your password has been sent to your email.";
-                   return $response;
-//                   return $this->redirect(["site/reset-ok"]);
+                   return true;
                }
                else{
-                   $model->addError("email",["This email does not exist"]);
-                   $response['error']= $model->errors;
-                   return $response;
+                   return $model->errors;
                }
            }else{
-               $response['error']= $model->errors;
-               return $response;
+               return $model->errors;
            }
        }
         return $this->redirect("/");
-
-//        return $this->render("reset", ["model"=>$model]);
     }
 
     public function actionResetOk(){
@@ -143,36 +140,80 @@ class SiteController extends Controller
      *
      * @return Response|string
      */
-    public function actionLogin()
-    {
+//    public function actionLogin()
+//    {
+//        Yii::$app->response->format = Response::FORMAT_JSON;
+//       if(Yii::$app->request->isPost){
+//
+//           //Разлогиниваем пользователя
+//           if (!Yii::$app->user->isGuest) {
+//               Yii::$app->user->logout();
+//           }
+//
+//           $model = new LoginForm();
+//           if ($model->load(Yii::$app->request->post()) && $model->login()) {
+//               $role = Yii::$app->authManager->getRolesByUser(Yii::$app->user->getId());
+//               if($role["ROLE_UNIT"]){
+//                   return $this->redirect("/user/index");
+//               }else if($role["ROLE_AGENT"]){
+//                   return $this->redirect("/agent/keys");
+//               }
+//
+//           }
+//           $response['error']=$model->errors;
+//           return $response;
+//
+//       }
+//
+////        $model->password = '';
+////        return $this->render('login', [
+////            'model' => $model,
+////        ]);
+//        return $this->redirect("/");
+//    }
+
+
+    public function actionLogin() {
+
+        if(!Yii::$app->user->isGuest){ //на случай если пользователь уже залогинен
+            Yii::$app->user->logout();
+        }
+
         Yii::$app->response->format = Response::FORMAT_JSON;
-       if(Yii::$app->request->isPost){
+        $model = new LoginForm();
+        if(Yii::$app->request->isAjax and $model->load(Yii::$app->request->post())){
+            if ($model->login()){
+                return true;
+            }else{
+                return $model->errors;
+            }
+        }
 
-           //Разлогиниваем пользователя
-           if (!Yii::$app->user->isGuest) {
-               Yii::$app->user->logout();
-           }
+    }
 
-           $model = new LoginForm();
-           if ($model->load(Yii::$app->request->post()) && $model->login()) {
-               $role = Yii::$app->authManager->getRolesByUser(Yii::$app->user->getId());
-               if($role["ROLE_UNIT"]){
-                   return $this->redirect("/user/index");
-               }else if($role["ROLE_AGENT"]){
-                   return $this->redirect("/agent/keys");
-               }
+    public function actionGetRole(){
 
-           }
-           $response['error']=$model->errors;
-           return $response;
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        if(Yii::$app->request->isAjax){
+            if(Yii::$app->user->isGuest){
+                return "guest";
+            }
+            $role = Yii::$app->authManager->getRolesByUser(Yii::$app->user->getId());
+            if($role["ROLE_UNIT"]){
+                return "unit";
+            }else if($role["ROLE_AGENT"]){
+                return "agent";
+            }
+        }
+    }
 
-       }
-
-//        $model->password = '';
-//        return $this->render('login', [
-//            'model' => $model,
-//        ]);
-        return $this->redirect("/");
+    public function beforeAction($action)
+    {
+//        $this->var_export($this->action->id);
+        if($this->action->id=="get-role"){
+            $this->enableCsrfValidation = false;
+        }
+        return parent::beforeAction($action); // TODO: Change the autogenerated stub
     }
 
     /**

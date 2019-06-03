@@ -59,3 +59,153 @@ function setWarnings(selector){
         }
     });
 }
+
+function RegisterForm(event,form){
+    event.preventDefault();
+    Form = form;
+    data = $(Form).serialize();
+    cleanForm(Form);
+    if (ajax = xhr (data, "/register")){
+        ajaxString = JSON.parse(ajax.response); //Парсим ошибки формы
+        if (ajaxString!==true){
+            setErrors(ajax,Form);
+        }else{
+            cleanForm(Form);
+            document.location.href="/user/index"; //редериктем куда надо.
+        }
+    }
+}
+
+/*
+* Получает csrf токен из метатега.
+* */
+function getCSRFtoken(){
+   var  meta = document.querySelector("meta[name=csrf-token]");
+   return meta.getAttribute("content");
+
+}
+
+/*
+* Обрабатывает отправку формы сброса пороля
+*
+* @param event - событие клика по кнопки резет
+* @param form - текущая форма.
+* */
+function ResetForm(event,form){
+    event.preventDefault();
+    Form = form;
+    data = $(Form).serialize();
+    cleanForm(Form);
+    if (ajax = xhr ("/reset", data)){
+        ajaxString = JSON.parse(ajax.response); //Парсим ошибки формы
+        if (ajaxString!==true){
+            setErrors(ajax,Form);
+        }else{ //Если письмо удачно отправлено.
+            $.fancybox.close();
+            var success = $("#success")[0];
+            var title = success.querySelector(".title");
+            title.innerText = "A message with a link to reset your password has been sent to your email.";
+            $("#success").fancybox().click();
+        }
+    }
+}
+
+/*
+* Метод отвечающий за обработку формы логина.
+*
+* @param event - событие клика по кнопке
+* @param form - объект формы
+* */
+function LoginForm(event,form){
+    event.preventDefault();
+    Form = form;
+    data = $(Form).serialize();
+    cleanForm(Form);
+
+    if (ajax = xhr ("/login", data)){
+        ajaxString = JSON.parse(ajax.response); //Парсим ошибки формы
+        if (ajaxString!==true){
+            setErrors(ajax,Form);
+        }else{
+            cleanForm(Form);
+            var role = getRole();
+            if(role=="agent"){
+                document.location.href="/agent/keys"; //редериктем куда надо.
+            }else if(role=="unit"){
+                document.location.href="/user/index"; //редериктем куда надо.
+            }
+
+        }
+    }
+}
+
+/*
+* возвращает роль текущего пользователя.
+* */
+function getRole(){
+     ajax2 = xhr("/get-role");
+    return JSON.parse(ajax2.responseText);
+}
+
+/*
+* Устанавливает ошибки в форме которая соответствует какой либо модели.
+*
+* @param ajax - объект который получаем от сервера (объект ajax)
+* @param Form - объект формы по который кликнули.
+* */
+function setErrors(ajax, Form) {
+    ajax = JSON.parse(ajax.response);
+    for(resp in ajax){
+        response = ajax[resp]; //конкретная ошибка
+        input  = Form.querySelector("."+resp); //ищем поле которое соответствует ошибке
+        input.classList.add("error"); //добавляем к полю класс error
+
+        /*добавляем к полю span info*/
+        var div = document.createElement("div");
+        div.classList = "info";
+        div.innerText = "!";
+        input.appendChild(div);
+
+        span = input.querySelector("span");//Вставляем в span ошибку модели.
+        span.innerText = response[0];
+    }
+}
+
+/*
+ * Очищает форму по которой кликнули.
+ *
+ * @param form - объект формы по которой кликнули.
+* */
+function cleanForm(form){
+    var error  = form.querySelector(".error");
+    if(error!=null){
+        error.classList.remove("error");
+    }
+    var info = form.querySelectorAll(".info");
+    if (info.length>0) {
+        for (var i = 0 ; i<info.length; i++){
+            info[i].remove();
+        }
+    }
+}
+function xhr (url, data="") {
+    var xhr = new XMLHttpRequest();
+
+    // 2. Конфигурируем его: GET-запрос на URL 'phones.json'
+    xhr.open('POST', url, false);
+    xhr.setRequestHeader("X-Requested-With","XMLHttpRequest");
+    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+// 3. Отсылаем запрос
+    xhr.send(data);
+
+// 4. Если код ответа сервера не 200, то это ошибка
+    if (xhr.status != 200) {
+        // обработать ошибку
+        console.log( xhr.status + ': ' + xhr.statusText ); // пример вывода: 404: Not Found
+        ajaxEr = xhr;
+        return null;
+    } else {
+        // вывести результат
+        return xhr; // responseText -- текст ответа.
+    }
+}

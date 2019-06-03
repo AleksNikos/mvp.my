@@ -19,12 +19,12 @@ class ResetPassword extends Model
     public $verify_code;
     public function rules(){
         return [
-            [['email','verify_code'],'required'],
+            [['email'],'required'],
             [['email'],'email'],
             ['email','filter', 'filter' => 'trim'],
 
             /*капча от гугл*/
-            [['verify_code'], ReCaptchaValidator2::className(), 'uncheckedMessage' => 'Please confirm that you are not a bot.'],
+//            [['verify_code'], ReCaptchaValidator2::className(), 'uncheckedMessage' => 'Please confirm that you are not a bot.'],
         ];
     }
     public function sendMessage($user){

@@ -10,6 +10,7 @@ use himiklab\yii2\recaptcha\ReCaptcha2;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
 ?>
+
 <div id="login">
     <a class="close-btn" onclick="$.fancybox.close();" href="javascript:;">
         <img src="img/close.svg" alt="">
@@ -21,29 +22,14 @@ use yii\helpers\Html;
 
     <div id="login-popup" class="tabcontent">
 
-        <?php
-        myAjaxWidget::begin([
-                "link" => "/login",
-                "formSelector" => "#login-form1",
-            "submitSelector" => ".login",
-            "afterMethod" => "setWarnings('#login-form1')"
-
-        ]);
-        $form = ActiveForm::begin([
-    'id' => 'login-form1',
-    'layout' => 'horizontal',
-//    'action' => '/login', //this is post action
-    'fieldConfig' => [
-        'template' => "{label}\n<div class=\"col-lg-3\">{input}</div>\n<div class=\"col-lg-8\">{error}</div>",
-        'labelOptions' => ['class' => 'col-lg-1 control-label'],
-    ],
-]); ?>
-<div class="inp-wr">
+        <form id = "login-form1" onsubmit="LoginForm(event, this)" class="col-lg-1 control-label">
+    <?=Html :: hiddenInput(Yii::$app->getRequest()->csrfParam, Yii::$app->getRequest()->getCsrfToken(), []);?>
+<div class="inp-wr email">
     <span>Email</span>
     <?=Html::activeInput("email",$model, "email",["placeholder"=>"Enter your E-mail address", "autofocus"=>"true"])?>
 
 </div>
-<div class="inp-wr">
+<div class="inp-wr password">
     <span>Password</span>
     <?=Html::activeInput("password",$model,"password", ['placeholder'=>'Enter your password'])?>
 </div>
@@ -58,11 +44,7 @@ use yii\helpers\Html;
     <?= Html::submitButton('Login', ['class' => 'login', 'name' => 'login-button']) ?>
     <!--                <button class="login">Login</button>-->
 </div>
-<?php
-
-    ActiveForm::end();
-myAjaxWidget::end();
-?>
+</form>
 </div>
 <!-- add class "invited" to "tabcontent" bellow if user was invited -->
 <div id="create-popup" class="tabcontent invited">
@@ -142,28 +124,29 @@ myAjaxWidget::end();
         Reset password
     </div>
     <?php
-    myAjaxWidget::begin([
-        "link" => "/reset",
-        "formSelector" => "#resetForm",
-        "submitSelector" => ".reset",
-        "afterMethod" => "setWarnings('#resetForm')",
-        "successMethod" => "ajaxSuccess()",
+//    myAjaxWidget::begin([
+//        "link" => "/reset",
+//        "formSelector" => "#resetForm",
+//        "submitSelector" => ".reset",
+//        "afterMethod" => "setWarnings('#resetForm')",
+//        "successMethod" => "ajaxSuccess()",
+//
+//    ]);
 
-    ]);
+//    $resetForm = ActiveForm::begin([
+//        'id'=>'resetForm'
+//    ])?>
 
-    $resetForm = ActiveForm::begin([
-        'id'=>'resetForm'
-    ])?>
-    <div class="inp-wr">
+    <form id="resetForm" onsubmit="ResetForm(event,this)">
+        <?= Html::hiddenInput(Yii::$app->getRequest()->csrfParam, Yii::$app->getRequest()->csrfToken)?>
+    <div class="inp-wr email">
+        <span>Email</span>
         <?=Html::activeInput("email",$reset,"email",["placeholder"=>"E-mail"])?>
     </div>
     <div class="inp-wr btn">
         <?=Html::submitButton("Reset",["class"=>"reset"])?>
-        <!--                <button class="reset">Reset</button>-->
     </div>
-    <?php ActiveForm::end();
-        myAjaxWidget::end();
-    ?>
+    </form>
     <p class="informer">
         If you forgot your email, please, contact
         <br />
