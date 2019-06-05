@@ -161,6 +161,9 @@ $("tr.users .users").click(function() {
     $('#modal-user .name').html(agents[userID]['username']);
     $('#modal-user .company').html(agents[userID]['name_organization']);
     $('#modal-user .email').html(agents[userID]['email']);
+    if(!agents[userID]['image']){
+        agents[userID]['image'] = "default.png";
+    }
     $('#modal-user .photo img').prop("src", "/usersImage/"+agents[userID]['image']);
     $.fancybox.open({
         src  : '#modal-user',

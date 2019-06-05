@@ -51,12 +51,12 @@ class UserController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['hello', 'confirm-email','index','users','ajax-checker', 'keys','settings', 'payments','ajax-add-user','ajax-remove-user', 'delete-payment-method', 'add-key','download-key','update-key', 'stop-key'],
+                        'actions' => ['hello', 'confirm-email','index','users','ajax-checker', 'keys','settings', 'payments','ajax-add-user','ajax-remove-user', 'delete-payment-method', 'add-key','download-key','update-key', 'stop-key','replace-settings', 'change-password'],
                         'allow' => true,
                         'roles' => ['ROLE_UNIT'],
                     ],
                     [
-                        'actions' => [ 'add-key','download-key','update-key', 'stop-key'],
+                        'actions' => [ 'add-key','download-key','update-key', 'stop-key','replace-settings','change-password'],
                         'allow' => true,
                         'roles' => ['ROLE_AGENT'],
                     ],
@@ -71,7 +71,8 @@ class UserController extends Controller
                     'delete-payment-method'=>['post'],
                     'update-key'=>['post'],
                     'add-key'=>['post'],
-                    'stop-key'=>['post']
+                    'stop-key'=>['post'],
+                    'replace-settings'=>['post'],
                 ],
             ],
         ];
@@ -171,8 +172,8 @@ class UserController extends Controller
             $userTotal["total_price"] = $child["fd_price"]+$child["er_price"];
 
 
-
-            return $this->render("index", ["userTotal"=>$userTotal, "userChild"=>$userChilds2, "allTotal"=>$allTotal]);
+            $user = User::findOne(["id"=>$user->id]);
+            return $this->render("index", ["userTotal"=>$userTotal, "userChild"=>$userChilds2, "allTotal"=>$allTotal, "user"=>$user]);
         }else{
            $this->accessDenied();
         }
@@ -312,13 +313,35 @@ class UserController extends Controller
                 if($file = UploadedFile::getInstance($image,'image')){
                     $image->upload($file);
                 }
-                if($model->load(Yii::$app->request->post())){
-                    $model->setPassword();
-                }
             }
             return $this->render("settings",["image"=>$image,'changePass'=>$model]);
         }else{
             $this->accessDenied();
+        }
+    }
+
+    /*
+     * Действие ответственное за смену пароля в настройках.
+     * */
+    public function actionChangePassword(){
+        $role = Yii::$app->authManager->getRolesByUser(Yii::$app->user->id);
+        Yii::$app->response->format=Response::FORMAT_JSON;
+        if(Yii::$app->request->isAjax){
+            $model = new ChangePassword();
+            if($model->load(Yii::$app->request->post()) and $model->validateOldPassword() and $model->setPassword()){
+                return true;
+            }else{
+                return $model->errors;
+            }
+
+        }
+
+        if($role["ROLE_UNIT"]){
+            $this->redirect("/user/settings");
+        }else if($role["ROLE_AGENT"]){
+            $this->redirect("/agent/settings");
+        }else{
+            $this->redirect("/");
         }
     }
 
@@ -463,6 +486,30 @@ class UserController extends Controller
         }else{
             $response["console"] = "File not exist";
         }
+    }
+
+    /*
+     * меняет имя или имя организации в настройках.
+     *
+     * */
+    public function actionReplaceSettings(){
+        if(Yii::$app->request->isAjax){
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            $post = Yii::$app->request->post();
+            $user=User::findOne(["id"=>Yii::$app->user->id]);
+            if($post["name"]=="company"){
+                $user->name_organization=$post["val"];
+                if($user->save()){
+                    return true;
+                }
+            }else if($post["name"]=="name"){
+                $user->username=$post["val"];
+                if($user->save()){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
 

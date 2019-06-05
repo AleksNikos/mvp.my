@@ -41,7 +41,7 @@ $this->params['pageID']="dashboard";
 
 
     <tr>
-        <td>You (1 key)</td>
+        <td>You (<?=count($user->keys)?> key)</td>
         <td><span class="val"><?=$userTotal["total_count"]?null:0?></span><span class="price">$<?=$userTotal["total_price"]?null:0?></span></td>
         <td><span class="val"><?=$userTotal["fd_count"]?null:0?></span><span class="price">$<?=$userTotal["fd_price"]?null:0?></span></td>
         <td><span class="val"><?=$userTotal["er_count"]?null:0?></span><span class="price">$<?=$userTotal["er_price"]?null:0?></span></td>

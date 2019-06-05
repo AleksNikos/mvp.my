@@ -67,7 +67,7 @@ class AgentController extends Controller
                 $user->IS_ACTIVATED = 1;
 
                 if($user->save()){
-                    $this->redirect("/login");
+                    $this->redirect("/");
 
                 }else{
                     $error = "Возникла непридвиденная ошибка при сохранении данных";

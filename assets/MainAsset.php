@@ -27,7 +27,7 @@ class MainAsset extends AssetBundle
 
     ];
     public $depends = [
-
+        'yii\web\YiiAsset',
     ];
 }
 ?>

@@ -27,7 +27,7 @@ class ChangePassword extends Model
             [['password'],'string','min'=>6,'message'=>'New password must contain at least 6 characters.'],
             [['password'],  'match', 'pattern' => '#^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{6,}$#', 'message'=>'New password must contain numbers, upper and lower case characters.'],
             [['confirmPassword'], "compare", "compareAttribute"=>"password", "message"=>"Passwords don't match"],
-            [['oldPassword'],'validateOldPassword']
+            [['oldPassword'],'validateOldPassword',"message"=>"Invalid old password"]
         ];
     }
 
@@ -37,6 +37,7 @@ class ChangePassword extends Model
         if($user->validatePassword($this->oldPassword)){
             return true;
         }else{
+            $this->addError("oldPassword","Invalid old password");
             return false;
         }
     }

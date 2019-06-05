@@ -59,7 +59,7 @@ $this->title = 'My Yii Application';
             echo "<a href='/agent/'>Dashboard</a>";
         }else{
             echo "<a data-fancybox data-src=\"#login\" href=\"javascript:;\" class=\"login-btn\">
-                        Login
+                        Login / Sign up
                     </a>";
         }
         ?>

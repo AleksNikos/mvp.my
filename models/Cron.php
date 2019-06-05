@@ -45,13 +45,13 @@ class Cron extends Model
            $keysInfo = $connector->keysInfo($statArray);
 //            $this->var_export($keysInfo->getCalls());
 
-//           if($uid->uid==8){
-//               $this->var_export($keysInfo);
-//           }
+           if($uid->uid==8){
+               $this->var_export($keysInfo);
+           }
 
            $total = 0;
             $calls = $keysInfo->getCalls();
-            $this->var_export($calls[0]->getForService());
+//            $this->var_export($calls[0]->getForService());
            /*-----Это место заменить на конкретную статистику по Fd и Er ------------------------*/
            foreach ($calls as $count){
                $total = $total+$count->getTotal();
@@ -60,7 +60,6 @@ class Cron extends Model
            /*-----Это место заменить на конкретную статистику по Fd и Er -------------------*/
 //            $this->var_export($total);
            $currentUser = User::findOne(["id"=>$uid->userID]);
-
                //Создаем новую запись
                $totalStatisticsModel = new TotalStatistics();
                $totalStatisticsModel->fd_count = $total;

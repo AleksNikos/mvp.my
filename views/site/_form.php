@@ -55,44 +55,48 @@ use yii\helpers\Html;
             access and pay expences of the account you about to create
         </p>
     </div>
-    <?php
-    myAjaxWidget::begin([
-        "link" => "/register",
-        "formSelector" => "#registerForm",
-        "submitSelector" => ".login",
-        "afterMethod" => "setWarnings('#registerForm')",
-        "successMethod" => "ajaxSuccess()",
+        <?php
+//    myAjaxWidget::begin([
+//        "link" => "/register",
+//        "formSelector" => "#registerForm",
+//        "submitSelector" => ".login",
+//        "afterMethod" => "setWarnings('#registerForm')",
+//        "successMethod" => "ajaxSuccess()",
+//
+//    ]);
 
-    ]);
-
-    $registerForm = ActiveForm::begin([
-            'id'=>'registerForm'
-    ])?>
-    <div class="inp-wr">
+    ?>
+    <form id="registerForm" onsubmit="RegisterForm(event,this);">
+        <?=Html::hiddenInput(Yii::$app->getRequest()->csrfParam,Yii::$app->request->csrfToken)?>
+    <div class="inp-wr username">
         <span>Name</span>
         <?=Html::activeInput("text",$register, "username", ["placeholder"=>"Enter your name"])?>
 
     </div>
-    <div class="inp-wr">
+    <div class="inp-wr name_organization">
         <span>Company</span>
         <?=Html::activeInput("text", $register,"name_organization", ["placeholder"=>"Enter your company"])?>
 
     </div>
-    <div class="inp-wr">
+    <div class="inp-wr email">
         <span>Email</span>
         <?=Html::activeInput("email", $register,"email", ["placeholder"=>"Enter your E-mail address"])?>
 
     </div>
-    <div class="inp-wr">
+    <div class="inp-wr password">
         <span>Password</span>
         <?=Html::activeInput("password", $register,"password", ["placeholder"=>"Enter your password"])?>
 
     </div>
-    <div>
-        <span></span>
-        <?=$registerForm->field($register, "verify_code",["options"=>[
-            "style"=>"margin-bottom:20px;"
-        ]])->widget(ReCaptcha2::className(),[   'siteKey'=>'6LcozJ4UAAAAAEY1Sh9IUGx8Kq1DBVqalpgTirm0'])->label(false)?>
+    <div class="verify_code">
+        <span style="color: #6673b4;">Google captcha</span>
+            <?php
+            echo \himiklab\yii2\recaptcha\ReCaptcha2::widget([
+                'name' => 'Register[verify_code]',
+                'siteKey' => '6LcozJ4UAAAAAEY1Sh9IUGx8Kq1DBVqalpgTirm0', // unnecessary is reCaptcha component was set up
+                'widgetOptions' => ['class' => ''],
+            ])
+        ?>
     </div>
     <div class="inp-wr remember">
         <span></span>
@@ -104,12 +108,9 @@ use yii\helpers\Html;
     </div>
 
     <div class="inp-wr btn">
-        <button class="login">CREATE ACCOUNT</button>
+        <input type="submit" value="CREATE ACCOUNT" class="login">
     </div>
-    <?php ActiveForm::end();
-    myAjaxWidget::end();
-
-    ?>
+    </form>
 <!--    <p class="informer">Have an account? Login</p>-->
 </div>
 
@@ -123,20 +124,6 @@ use yii\helpers\Html;
     <div class="title">
         Reset password
     </div>
-    <?php
-//    myAjaxWidget::begin([
-//        "link" => "/reset",
-//        "formSelector" => "#resetForm",
-//        "submitSelector" => ".reset",
-//        "afterMethod" => "setWarnings('#resetForm')",
-//        "successMethod" => "ajaxSuccess()",
-//
-//    ]);
-
-//    $resetForm = ActiveForm::begin([
-//        'id'=>'resetForm'
-//    ])?>
-
     <form id="resetForm" onsubmit="ResetForm(event,this)">
         <?= Html::hiddenInput(Yii::$app->getRequest()->csrfParam, Yii::$app->getRequest()->csrfToken)?>
     <div class="inp-wr email">

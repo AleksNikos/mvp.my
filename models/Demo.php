@@ -68,7 +68,12 @@ class Demo extends \yii\db\ActiveRecord
      * */
     public static function stop(IdentityInterface $user){
         $demo = static::findOne(["userID"=>$user->getId()]);
-        $demo->is_activated = 0;
-       return $demo->save();
+        if($demo!=null){
+            $demo->is_activated = 0;
+            return $demo->save();
+        }else{
+            return true;
+        }
+
     }
 }

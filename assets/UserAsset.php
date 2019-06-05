@@ -31,7 +31,7 @@ class UserAsset extends AssetBundle
         'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js',//+
         'js/chartjs-plugin-stacked100.js',//+
         'js/jquery.fancybox.min.js',//+
-        'js/main22.js',
+        'js/main.js',
         'js/ajax.js',
         'js/responsive-tables.js',
     ];

@@ -109,7 +109,7 @@ class SiteController extends Controller
             if($model->load(Yii::$app->request->post())){
 
                     if($model->setNewPassword($user)){
-                        $this->redirect(["site/login"]);
+                        $this->redirect(["/"]);
                     }
             }
 
@@ -183,7 +183,7 @@ class SiteController extends Controller
         $model = new LoginForm();
         if(Yii::$app->request->isAjax and $model->load(Yii::$app->request->post())){
             if ($model->login()){
-                return true;
+                return true; //редирикт настроен в js
             }else{
                 return $model->errors;
             }
@@ -205,11 +205,11 @@ class SiteController extends Controller
                 return "agent";
             }
         }
+        return $this->redirect("/",302);
     }
 
     public function beforeAction($action)
     {
-//        $this->var_export($this->action->id);
         if($this->action->id=="get-role"){
             $this->enableCsrfValidation = false;
         }
@@ -260,19 +260,17 @@ class SiteController extends Controller
     */
     public function actionRegister(){
 
-        if(Yii::$app->request->isPost){
+        if(Yii::$app->request->isAjax){
             Yii::$app->response->format = Response::FORMAT_JSON;
             $model = new Register();
             Yii::$app->user->logout();
             if($model->load(Yii::$app->request->post())){
                 $model->addParametersInModel();
-//            $this->var_export($model);
                 if($model->save()){// восстановить
-//                    $this->var_export($model);
-                    $demo = new Demo ();
+                    $demo = new Demo (); //запускаем демо
                     $user = User::findOne(["id"=>$model->id]);
                     $demo->start($user);
-//                    return "hello";
+
                     /*Создаем дефолтового юзера*/
                     $default_user = new Register();
                     $default_user->setAttributes($model->getAttributes(), false);
@@ -287,22 +285,32 @@ class SiteController extends Controller
                     Yii::$app->authManager->assign($ROLE_AGENT,$default_user->id);
 
                     //аторизовать пользователя.
-                    $user = User::findIdentity($model->id);
+                    //+отказ от авторизации пр ирегистрации
+
                     if($user->login()){
-                        // сделать отправку письма
+                        $user = User::findIdentity($model->id);
                         $user->sendConfirmEmail();
-//                        $this->redirect(["user/hello"]);
-                        $response['success'] = "You have successfully registered, an email has been sent to your inbox.";
+                        return true;
                     }else{
-//                    $this->var_export($model->errors);
-                        $response['error']=$model->errors;
-                        return $response;
+                        return false;
                     }
+
+
+                    return true;
+//                    if($user->login()){
+//                        // сделать отправку письма
+//                        $user->sendConfirmEmail();
+//                        $response['success'] = "You have successfully registered, an email has been sent to your inbox.";
+//                    }else{
+////                    $this->var_export($model->errors);
+//                        $response['error']=$model->errors;
+//                        return $model->errors;
+//                    }
 
 
                 }else{
                     $response['error']=$model->errors;
-                    return $response;
+                    return $model->errors;
                 }
 
             }
@@ -310,7 +318,7 @@ class SiteController extends Controller
 //        $csv = $this->importCSV("country.csv"); //импортирует csv со всеми странами мира
 //        $countrySelect2 = $this->CountrySelect2($csv);
         $response['error']=$model->errors;
-        return $response;
+        return $model->errors;
 
 //        return $this->render("register",["model"=>$model, "countrySelect2"=>$countrySelect2]);
     }
@@ -395,7 +403,10 @@ class SiteController extends Controller
     }
 
     public function actionCron(){
+        echo "hello";
+        $this->var_export("test");
         $cron = new Cron();
+
         $cron->updateTotalStatistics();
 //        $cron->startCalculation();
 //        $cron->startChange();

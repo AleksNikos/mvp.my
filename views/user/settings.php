@@ -25,6 +25,12 @@ $this->params['pageID']="settings";
                 'id'=>'PjaxImage',
             ]);
             ?>
+            <?php
+            if(!$user->image){
+                $user->image = "default.png";
+            }
+
+            ?>
             <img src="<?="/usersImage/".$user->image?>" alt="">
             <a style="cursor: pointer;">Edit photo</a>
             <?php
@@ -67,13 +73,13 @@ JS;
                 <div class="inp-name">
                     User name
                 </div>
-                <input type="text" value="<?=$user->username?>" disabled="true" placeholder="Enter your name" name="name">
+                <input type="text" value="<?=$user->username?>"  placeholder="Enter your name" name="name">
             </div>
             <div class="inp-wr">
                 <div class="inp-name">
                     Company
                 </div>
-                <input type="text" value="<?=$user->name_organization?>"  disabled="true" placeholder="Enter your company name" name="company">
+                <input type="text" value="<?=$user->name_organization?>"  placeholder="Enter your company name" name="company">
             </div>
             <div class="mail">
                 <div class="icon">
@@ -95,10 +101,6 @@ JS;
                 }
                 ?>
             </div>
-            <?php $form = ActiveForm::begin([
-                    'id'=>'changePassword',
-            ]);?>
-
 
             <div class="change_pass-btn">
                 <svg width="15" height="17" viewBox="0 0 15 17" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -106,41 +108,67 @@ JS;
                 </svg>
                 <a id="change-pass" href="javascript:;">Change password</a>
             </div>
-            <div class="password d-none">
-
-                <div class="inp-wr">
-                    <?=$form->field($changePass,'oldPassword')->passwordInput(['placeholder'=>'Current password'])->label(false)?>
-                    <!--                    <input type="password" placeholder="Current password">-->
-                </div>
-                <div class="inp-wr">
-                    <?=$form->field($changePass,'password')->passwordInput(['placeholder'=>"New password"])->label(false)?>
-                    <!--                    <input type="password" placeholder="New password">-->
-                </div>
-                <div class="inp-wr">
-                    <?=$form->field($changePass, 'confirmPassword')->passwordInput(['placeholder'=>"Repeat new password"])->label(false)?>
-                    <!--                    <input type="password" placeholder="Repeat new password">-->
-                </div>
-
-
-                <div class="buttons">
-                    <div class="cancel">
-                        <a href="#">cancel</a>
+            <form id="changePassword" onsubmit="ChangePasswordForm(event,this)">
+                <div class="password d-none">
+                    <?=Html::hiddenInput(Yii::$app->request->csrfParam, Yii::$app->request->csrfToken,[])?>
+                    <div class="inp-wr oldPassword">
+                        <span style="display: none">Current Password</span>
+                        <?=Html::activeInput('text',$changePass,"oldPassword",["placeholder"=>"Current password", "required"=>"true"])?>
+                        <!--                    <input type="password" placeholder="Current password">-->
+                    </div>
+                    <div class="inp-wr password">
+                        <span style="display: none">New password</span>
+                        <?=Html::activeInput('password',$changePass,"password",["placeholder"=>"New password","required"=>"true"])?>
+                        <!--                    <input type="password" placeholder="New password">-->
+                    </div>
+                    <div class="inp-wr confirmPassword">
+                        <span style="display: none">Repeat new password</span>
+                        <?=Html::activeInput('password',$changePass,"confirmPassword",["placeholder"=>"Repeat new password","required"=>"true"])?>
+                        <!--                    <input type="password" placeholder="Repeat new password">-->
                     </div>
 
-                    <?php
 
-                    ?>
-                    <div class="change">
-                        <a style="cursor: pointer" onclick="$('#changePassword').submit();">change password</a>
+                    <div class="buttons">
+                        <div class="cancel">
+                            <button href="#">cancel</button>
+                        </div>
+                        <div class="change">
+                            <button style="cursor: pointer" type="submit">change password</button>
+                        </div>
                     </div>
                 </div>
-            </div>
-
-
-
-
-            <?php ActiveForm::end();?>
+            </form>
         </div>
     </div>
 
+<script>
 
+    input1 = document.querySelector("input[name=name]");
+    input2 = document.querySelector("input[name=company]");
+
+    function setSettings(input){
+        if(input!=null){
+            val = input.value;
+            name = input.getAttribute("name");
+            ajax = xhr("/user/replace-settings","_csrf="+getCSRFtoken()+"&name="+name+"&val="+val);
+            ajaxString = JSON.parse(ajax.response);
+            if(ajaxString===true){
+                $.fancybox.close();
+                var success = $("#success")[0];
+                var title = success.querySelector(".title");
+                title.innerText = name+" has been changed.";
+                $("#success").fancybox().click();
+            }else{
+                $.fancybox.close();
+                var success = $("#success")[0];
+                var title = success.querySelector(".title");
+                title.innerText = "Sorry, an unknown error has occurred.";
+                $("#success").fancybox().click();
+            }
+        }
+    }
+    input1.onblur = function(){setSettings(input1)};
+    input2.onblur = function() {setSettings(input2)};
+
+
+</script>

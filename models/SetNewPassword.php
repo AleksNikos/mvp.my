@@ -37,6 +37,7 @@ class SetNewPassword extends Model
 
         $user->password_hash = Yii::$app->security->generatePasswordHash($this->password);
         $user->reset_password_hash = null;
+        $user->IS_ACTIVATED = 1;
         return $user->save();
     }
 
